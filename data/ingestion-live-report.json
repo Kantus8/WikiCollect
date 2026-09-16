@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "status": "completed_with_errors",
+  "processed": 0,
+  "failed": 1,
+  "started_at": 1789566558.1148493,
+  "finished_at": 1789566577.9521518,
+  "version": 1,
+  "month": "2026-08",
+  "policy": "log-rank-v1",
+  "items": [
+    {
+      "card_id": 1,
+      "title": "Albert Einstein",
+      "status": "failed",
+      "error": "Wikimedia HTTP 403"
+    }
+  ]
+}

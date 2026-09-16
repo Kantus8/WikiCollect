@@ -1,0 +1,15 @@
+{
+  "currency": 600,
+  "inventory": {
+    "Albert Einstein": 2,
+    "Allemagne": 1,
+    "XIXe siècle": 1,
+    "Ulm": 1,
+    "1879": 1,
+    "14 mars": 1,
+    "Nuage d'Oort": 1
+  },
+  "portalTickets": {"Physique": 1},
+  "selectedOrganigram": "Albert Einstein",
+  "lastUpdate": 1789563600000
+}

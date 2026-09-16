@@ -1,0 +1,650 @@
+{
+  "source": "Prototype fourni — statistiques et portails à vérifier par ingestion",
+  "cards": [
+    {
+      "title": "Albert Einstein",
+      "legacy_title": "Albert Einstein",
+      "url": "https://fr.wikipedia.org/wiki/Albert_Einstein",
+      "languages": 188,
+      "monthly_views": 450000,
+      "snippet": "Physicien théoricien d'origine allemande, célèbre pour avoir développé la théorie de la relativité restreinte et générale.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/320px-Albert_Einstein_Head.jpg",
+      "is_mother": true,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Sciences",
+        "Portail:Histoire"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Allemagne",
+      "legacy_title": "Allemagne",
+      "url": "https://fr.wikipedia.org/wiki/Allemagne",
+      "languages": 295,
+      "monthly_views": 1200000,
+      "snippet": "Pays d'Europe centrale bordé par la mer du Nord et les Alpes.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/320px-Flag_of_Germany.svg.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Géographie",
+        "Portail:Europe"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "XIXe siècle",
+      "legacy_title": "XIXe siècle",
+      "url": "https://fr.wikipedia.org/wiki/XIXe_si%C3%A8cle",
+      "languages": 112,
+      "monthly_views": 180000,
+      "snippet": "Siècle s'étendant du 1er janvier 1801 au 31 décembre 1900, marqué par la révolution industrielle.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Monet_Gare_Saint-Lazare.jpg/320px-Monet_Gare_Saint-Lazare.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Ulm",
+      "legacy_title": "Ulm",
+      "url": "https://fr.wikipedia.org/wiki/Ulm",
+      "languages": 114,
+      "monthly_views": 95000,
+      "snippet": "Ville universitaire du Bade-Wurtemberg en Allemagne, lieu de naissance d'Albert Einstein.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Ulm_Muenster_vom_Rathaus.jpg/320px-Ulm_Muenster_vom_Rathaus.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Géographie",
+        "Portail:Allemagne"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "1879",
+      "legacy_title": "1879",
+      "url": "https://fr.wikipedia.org/wiki/1879",
+      "languages": 78,
+      "monthly_views": 45000,
+      "snippet": "Année commune du calendrier grégorien débutant un mercredi.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire",
+        "Portail:Chronologie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "14 mars",
+      "legacy_title": "14 mars",
+      "url": "https://fr.wikipedia.org/wiki/14_mars",
+      "languages": 62,
+      "monthly_views": 32000,
+      "snippet": "73e jour de l'année du calendrier grégorien, date de naissance d'Albert Einstein.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [
+        "Portail:Chronologie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Relativité restreinte",
+      "legacy_title": "Relativité restreinte",
+      "url": "https://fr.wikipedia.org/wiki/Relativit%C3%A9_restreinte",
+      "languages": 92,
+      "monthly_views": 140000,
+      "snippet": "Théorie physique introduite en 1905 par Albert Einstein modifiant les concepts d'espace et de temps.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Light_cone.svg/320px-Light_cone.svg.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Sciences"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Effet photoélectrique",
+      "legacy_title": "Effet photoélectrique",
+      "url": "https://fr.wikipedia.org/wiki/Effet_photo%C3%A9lectrique",
+      "languages": 85,
+      "monthly_views": 98000,
+      "snippet": "Émission d'électrons par un matériau lorsqu'il est exposé à la lumière, ayant valu le Nobel à Einstein.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Photoelectric_effect.svg/320px-Photoelectric_effect.svg.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Sciences"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Relativité générale",
+      "legacy_title": "Relativité générale",
+      "url": "https://fr.wikipedia.org/wiki/Relativit%C3%A9_g%C3%A9n%C3%A9rale",
+      "languages": 110,
+      "monthly_views": 210000,
+      "snippet": "Théorie géométrique de la gravitation publiée par Albert Einstein en 1915.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/GPB_circling_earth.jpg/320px-GPB_circling_earth.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "E=mc2",
+      "legacy_title": "E=mc2",
+      "url": "https://fr.wikipedia.org/wiki/E%3Dmc2",
+      "languages": 68,
+      "monthly_views": 180000,
+      "snippet": "Formule d'équivalence masse-énergie d'Albert Einstein.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Mouvement brownien",
+      "legacy_title": "Mouvement brownien",
+      "url": "https://fr.wikipedia.org/wiki/Mouvement_brownien",
+      "languages": 58,
+      "monthly_views": 65000,
+      "snippet": "Description mathématique du mouvement aléatoire d'une particule immergée dans un fluide.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Brownian_hierarchical.svg/320px-Brownian_hierarchical.svg.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Mathématiques"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Prix Nobel de physique",
+      "legacy_title": "Prix Nobel de physique",
+      "url": "https://fr.wikipedia.org/wiki/Prix_Nobel_de_physique",
+      "languages": 105,
+      "monthly_views": 150000,
+      "snippet": "Récompense suprême décernée annuellement depuis 1901 par l'Académie royale des sciences de Suède.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Nobel_Prize.png/320px-Nobel_Prize.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Sciences"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Médaille Max-Planck",
+      "legacy_title": "Médaille Max-Planck",
+      "url": "https://fr.wikipedia.org/wiki/M%C3%A9daille_Max-Planck",
+      "languages": 34,
+      "monthly_views": 25000,
+      "snippet": "Plus haute distinction de la Société allemande de physique pour des travaux théoriques.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [
+        "Portail:Physique",
+        "Portail:Sciences"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Institute for Advanced Study",
+      "legacy_title": "Institute for Advanced Study",
+      "url": "https://fr.wikipedia.org/wiki/Institute_for_Advanced_Study",
+      "languages": 42,
+      "monthly_views": 38000,
+      "snippet": "Centre de recherche postdoctorale réputé situé à Princeton, où Einstein a travaillé jusqu'à sa mort.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Fuld_Hall_IAS.jpg/320px-Fuld_Hall_IAS.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Sciences",
+        "Portail:Éducation"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Déclaration des droits de l'homme et du citoyen de 1789",
+      "legacy_title": "Déclaration des droits de l'homme et du citoyen de 1789",
+      "url": "https://fr.wikipedia.org/wiki/D%C3%A9claration_des_droits_de_l%27homme_et_du_citoyen_de_1789",
+      "languages": 120,
+      "monthly_views": 380000,
+      "snippet": "Texte fondamental de la Révolution française qui énonce un ensemble de droits naturels, individuels et universels.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Declaration_of_the_Rights_of_man_1789.jpg/320px-Declaration_of_the_Rights_of_man_1789.jpg",
+      "is_mother": true,
+      "portals": [
+        "Portail:Droit",
+        "Portail:Histoire de France",
+        "Portail:Politique"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Égalité devant la loi",
+      "legacy_title": "Article 1er...",
+      "url": "https://fr.wikipedia.org/wiki/%C3%89galit%C3%A9_devant_la_loi",
+      "languages": 0,
+      "monthly_views": 0,
+      "snippet": "Page encyclopédique individuelle consacrée à Égalité devant la loi. Métadonnées à synchroniser avec Wikipédia.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [],
+      "verified": false,
+      "metrics_source": "editorial-pending",
+      "replaces_title": "Article 1er de la Déclaration des droits de l'homme et du citoyen de 1789"
+    },
+    {
+      "title": "Droit naturel",
+      "legacy_title": "Article 2...",
+      "url": "https://fr.wikipedia.org/wiki/Droit_naturel",
+      "languages": 0,
+      "monthly_views": 0,
+      "snippet": "Page encyclopédique individuelle consacrée à Droit naturel. Métadonnées à synchroniser avec Wikipédia.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [],
+      "verified": false,
+      "metrics_source": "editorial-pending",
+      "replaces_title": "Article 2 de la Déclaration des droits de l'homme et du citoyen de 1789"
+    },
+    {
+      "title": "Liberté",
+      "legacy_title": "Article 4...",
+      "url": "https://fr.wikipedia.org/wiki/Libert%C3%A9",
+      "languages": 0,
+      "monthly_views": 0,
+      "snippet": "Page encyclopédique individuelle consacrée à Liberté. Métadonnées à synchroniser avec Wikipédia.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [],
+      "verified": false,
+      "metrics_source": "editorial-pending",
+      "replaces_title": "Article 4 de la Déclaration des droits de l'homme et du citoyen de 1789"
+    },
+    {
+      "title": "Liberté d'expression",
+      "legacy_title": "Article 11...",
+      "url": "https://fr.wikipedia.org/wiki/Libert%C3%A9_d'expression",
+      "languages": 0,
+      "monthly_views": 0,
+      "snippet": "Page encyclopédique individuelle consacrée à Liberté d'expression. Métadonnées à synchroniser avec Wikipédia.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [],
+      "verified": false,
+      "metrics_source": "editorial-pending",
+      "replaces_title": "Article 11 de la Déclaration des droits de l'homme et du citoyen de 1789"
+    },
+    {
+      "title": "Révolution française",
+      "legacy_title": "Révolution française",
+      "url": "https://fr.wikipedia.org/wiki/R%C3%A9volution_fran%C3%A7aise",
+      "languages": 240,
+      "monthly_views": 950000,
+      "snippet": "Période de bouleversements politiques et sociaux qui mit fin à l'Ancien Régime en France.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg/320px-Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire de France",
+        "Portail:Histoire"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "1789",
+      "legacy_title": "1789",
+      "url": "https://fr.wikipedia.org/wiki/1789",
+      "languages": 85,
+      "monthly_views": 90000,
+      "snippet": "Année charnière marquée par les États généraux et la prise de la Bastille.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire",
+        "Portail:Chronologie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Prise de la Bastille",
+      "legacy_title": "Prise de la Bastille",
+      "url": "https://fr.wikipedia.org/wiki/Prise_de_la_Bastille",
+      "languages": 105,
+      "monthly_views": 320000,
+      "snippet": "Événement fondateur survenu le mardi 14 juillet 1789 à Paris.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Prise_de_la_Bastille.jpg/320px-Prise_de_la_Bastille.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire de France"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Serment du Jeu de paume",
+      "legacy_title": "Serment du Jeu de paume",
+      "url": "https://fr.wikipedia.org/wiki/Serment_du_Jeu_de_paume",
+      "languages": 45,
+      "monthly_views": 95000,
+      "snippet": "Engagement solennel d'union pris le 20 juin 1789 par 300 députés du tiers état.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Le_Serment_du_Jeu_de_paume.jpg/320px-Le_Serment_du_Jeu_de_paume.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire de France"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Assemblée constituante de 1789",
+      "legacy_title": "Assemblée constituante de 1789",
+      "url": "https://fr.wikipedia.org/wiki/Assembl%C3%A9e_constituante_de_1789",
+      "languages": 38,
+      "monthly_views": 58000,
+      "snippet": "Première assemblée constituante française, issue des États généraux.",
+      "image_url": null,
+      "is_mother": false,
+      "portals": [
+        "Portail:Histoire de France",
+        "Portail:Politique"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Système solaire",
+      "legacy_title": "Système solaire",
+      "url": "https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire",
+      "languages": 195,
+      "monthly_views": 520000,
+      "snippet": "Système planétaire composé du Soleil et des corps célestes qui gravitent autour de lui.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Planets2013.svg/320px-Planets2013.svg.png",
+      "is_mother": true,
+      "portals": [
+        "Portail:Astronomie",
+        "Portail:Sciences"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Soleil",
+      "legacy_title": "Soleil",
+      "url": "https://fr.wikipedia.org/wiki/Soleil",
+      "languages": 260,
+      "monthly_views": 410000,
+      "snippet": "Étoile naine jaune au centre du système solaire.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/320px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Terre",
+      "legacy_title": "Terre",
+      "url": "https://fr.wikipedia.org/wiki/Terre",
+      "languages": 285,
+      "monthly_views": 620000,
+      "snippet": "Troisième planète du système solaire et seul lieu connu abritant la vie.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/320px-The_Earth_seen_from_Apollo_17.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie",
+        "Portail:Géographie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Mercure (planète)",
+      "legacy_title": "Mercure (planète)",
+      "url": "https://fr.wikipedia.org/wiki/Mercure_(plan%C3%A8te)",
+      "languages": 170,
+      "monthly_views": 110000,
+      "snippet": "Planète la plus proche du Soleil et la moins massive du système solaire.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/320px-Mercury_in_true_color.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Vénus (planète)",
+      "legacy_title": "Vénus (planète)",
+      "url": "https://fr.wikipedia.org/wiki/V%C3%A9nus_(plan%C3%A8te)",
+      "languages": 180,
+      "monthly_views": 130000,
+      "snippet": "Deuxième planète du système solaire par ordre d'éloignement au Soleil.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/320px-Venus-real_color.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Mars (planète)",
+      "legacy_title": "Mars (planète)",
+      "url": "https://fr.wikipedia.org/wiki/Mars_(plan%C3%A8te)",
+      "languages": 190,
+      "monthly_views": 220000,
+      "snippet": "Quatrième planète du système solaire, dite la « planète rouge ».",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/320px-OSIRIS_Mars_true_color.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Jupiter (planète)",
+      "legacy_title": "Jupiter (planète)",
+      "url": "https://fr.wikipedia.org/wiki/Jupiter_(plan%C3%A8te)",
+      "languages": 185,
+      "monthly_views": 195000,
+      "snippet": "Plus volumineuse et massive planète du système solaire.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Jupiter.jpg/320px-Jupiter.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Saturne (planète)",
+      "legacy_title": "Saturne (planète)",
+      "url": "https://fr.wikipedia.org/wiki/Saturne_(plan%C3%A8te)",
+      "languages": 175,
+      "monthly_views": 185000,
+      "snippet": "Sixième planète du système solaire, célèbre pour ses anneaux proéminents.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Saturn_during_Equinox.jpg/320px-Saturn_during_Equinox.jpg",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Ceinture de Kuiper",
+      "legacy_title": "Ceinture de Kuiper",
+      "url": "https://fr.wikipedia.org/wiki/Ceinture_de_Kuiper",
+      "languages": 88,
+      "monthly_views": 62000,
+      "snippet": "Zone en forme d'anneau située au-delà de l'orbite de Neptune.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Kuiper_belt_plot.svg/320px-Kuiper_belt_plot.svg.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    },
+    {
+      "title": "Nuage d'Oort",
+      "legacy_title": "Nuage d'Oort",
+      "url": "https://fr.wikipedia.org/wiki/Nuage_d%27Oort",
+      "languages": 76,
+      "monthly_views": 51000,
+      "snippet": "Vaste ensemble sphérique hypothétique de comètes situé aux confins du système solaire.",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Oort_cloud_Sedna_orbit.svg/320px-Oort_cloud_Sedna_orbit.svg.png",
+      "is_mother": false,
+      "portals": [
+        "Portail:Astronomie"
+      ],
+      "verified": false,
+      "metrics_source": "prototype"
+    }
+  ],
+  "trees": [
+    {
+      "id": "einstein",
+      "macro": "Sciences & découvertes",
+      "parent_set": "Figures de la physique",
+      "mother_title": "Albert Einstein",
+      "branches": [
+        {
+          "id": "einstein_origins",
+          "title": "Origines & Naissance",
+          "description": "Origines géographiques et époque de naissance.",
+          "base_pages": [
+            "Allemagne",
+            "XIXe siècle"
+          ],
+          "full_pages": [
+            "Ulm",
+            "1879",
+            "14 mars"
+          ]
+        },
+        {
+          "id": "einstein_discoveries",
+          "title": "Théories & Découvertes",
+          "description": "Les percées scientifiques majeures ayant révolutionné la physique.",
+          "base_pages": [
+            "Relativité restreinte",
+            "Effet photoélectrique"
+          ],
+          "full_pages": [
+            "Relativité générale",
+            "E=mc2",
+            "Mouvement brownien"
+          ]
+        },
+        {
+          "id": "einstein_awards",
+          "title": "Distinctions & Destin",
+          "description": "Reconnaissances internationales et exil américain.",
+          "base_pages": [
+            "Prix Nobel de physique"
+          ],
+          "full_pages": [
+            "Médaille Max-Planck",
+            "Institute for Advanced Study"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ddhc",
+      "macro": "Histoire & civilisations",
+      "parent_set": "Textes fondateurs",
+      "mother_title": "Déclaration des droits de l'homme et du citoyen de 1789",
+      "branches": [
+        {
+          "id": "ddhc_articles",
+          "title": "Droits fondamentaux & Libertés",
+          "description": "Les articles majeurs consacrant les libertés individuelles et l'égalité.",
+          "base_pages": [
+            "Liberté",
+            "Droit naturel"
+          ],
+          "full_pages": [
+            "Égalité devant la loi",
+            "Liberté d'expression"
+          ]
+        },
+        {
+          "id": "ddhc_genesis",
+          "title": "Genèse & Événements Révolutionnaires",
+          "description": "Les secousses historiques de 1789 ayant conduit à la proclamation du texte.",
+          "base_pages": [
+            "Révolution française",
+            "1789"
+          ],
+          "full_pages": [
+            "Prise de la Bastille",
+            "Serment du Jeu de paume",
+            "Assemblée constituante de 1789"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "solar",
+      "macro": "Sciences & découvertes",
+      "parent_set": "Mondes & univers",
+      "mother_title": "Système solaire",
+      "branches": [
+        {
+          "id": "solar_rocky",
+          "title": "Étoile & Planètes Telluriques",
+          "description": "Le Soleil et les mondes rocheux internes.",
+          "base_pages": [
+            "Soleil",
+            "Terre"
+          ],
+          "full_pages": [
+            "Mercure (planète)",
+            "Vénus (planète)",
+            "Mars (planète)"
+          ]
+        },
+        {
+          "id": "solar_giants",
+          "title": "Géantes & Confins",
+          "description": "Les géantes gazeuses et les ceintures extérieures.",
+          "base_pages": [
+            "Jupiter (planète)",
+            "Saturne (planète)"
+          ],
+          "full_pages": [
+            "Ceinture de Kuiper",
+            "Nuage d'Oort"
+          ]
+        }
+      ]
+    }
+  ]
+}
