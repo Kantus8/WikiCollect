@@ -4,11 +4,11 @@ Le catalogue de départ reprend les pages du prototype. Ses nombres de langues, 
 
 ## Utilisation locale
 
+`WIKIMEDIA_USER_AGENT` doit porter un contact réel — URL de projet ou adresse — et jamais une identité fictive : la valeur est lue depuis `.env` (voir `.env.example`). Sans contact identifiable, l’edge Wikimedia refuse la requête, voir « Exigence de User-Agent » plus bas.
+
 Depuis la racine du projet, après installation des dépendances :
 
 ```powershell
-# Personnaliser le contact, sans reprendre une identité fictive.
-$env:WIKIMEDIA_USER_AGENT = 'Wikidex/1.0 (votre URL ou votre adresse de contact)'
 .venv\Scripts\python.exe scripts/import_catalogue.py sync --report data/ingestion-report.json
 .venv\Scripts\python.exe scripts/import_catalogue.py sync --title 'Albert Einstein'
 .venv\Scripts\python.exe scripts/import_catalogue.py status
@@ -77,9 +77,14 @@ Chaque article et son point de reprise sont validés dans la même transaction. 
 
 Le catalogue, ses relations et son historique sont relationnels. Le travail reste volontairement un seul worker local ; le passage à des millions d’articles demande ingestion par lots depuis les dumps Wikimedia et une file de travail distribuée. L’API publique n’est pas destinée à répliquer Wikipédia par requêtes individuelles.
 
-### Vérification réelle dans cet environnement
+### Exigence de User-Agent
 
-Le 16 septembre 2026, la vérification d’**Albert Einstein** a atteint l’API Wikipédia, qui a répondu **HTTP 403**, avec un message de politique robots. Le travail n° 1 et `data/ingestion-live-report.json` conservent cet échec. Aucune donnée distante n’a été inventée, et le catalogue ne passe pas « vérifié » après cet essai. La synchronisation reste à relancer depuis un accès autorisé par Wikimedia, avec un User-Agent comportant un vrai contact. Les tests automatisés couvrent en complément pagination, redirections, validation, erreurs, collisions, invalidation et reprise.
+L’edge Wikimedia (HAProxy) refuse toute requête dont le User-Agent ne comporte pas de contact identifiable, et renvoie **HTTP 403** avec un message de politique robots — avant même que l’API soit atteinte. Le cas a été constaté puis levé ici :
+
+- Le 16 septembre 2026, un premier essai sur **Albert Einstein** a reçu ce 403 avec l’en-tête par défaut, dépourvu de contact. Le travail n° 1 et `data/ingestion-live-report.json` conservent cet échec.
+- Le même jour, avec un User-Agent portant l’URL du projet, `fr.wikipedia.org/w/api.php` et l’API pageviews répondent **200**, et la synchronisation complète a réussi : **34/34 pages, 0 échec**, rapport dans `data/ingestion-report.json`.
+
+Ce n’est donc pas une restriction d’adresse IP : un User-Agent de navigateur générique, sans contact, reste lui aussi refusé. Les tests automatisés couvrent en complément pagination, redirections, validation, erreurs, collisions, invalidation et reprise.
 
 ## Documentation officielle utilisée
 

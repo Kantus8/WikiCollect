@@ -1,0 +1,219 @@
+{
+  "id": 3,
+  "status": "completed",
+  "processed": 34,
+  "failed": 0,
+  "started_at": 1789587707.8387074,
+  "finished_at": 1789587766.3219,
+  "version": 2,
+  "month": "2026-08",
+  "policy": "log-rank-v1",
+  "items": [
+    {
+      "card_id": 1,
+      "title": "Albert Einstein",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 2,
+      "title": "Allemagne",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 3,
+      "title": "XIXe siècle",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 4,
+      "title": "Ulm",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 5,
+      "title": "1879",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 6,
+      "title": "14 mars",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 7,
+      "title": "Relativité restreinte",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 8,
+      "title": "Effet photoélectrique",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 9,
+      "title": "Relativité générale",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 10,
+      "title": "E=mc2",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 11,
+      "title": "Mouvement brownien",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 12,
+      "title": "Prix Nobel de physique",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 13,
+      "title": "Médaille Max-Planck",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 14,
+      "title": "Institute for Advanced Study",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 15,
+      "title": "Déclaration des droits de l'homme et du citoyen de 1789",
+      "status": "complete",
+      "warnings": [
+        "Image hidden because attribution metadata is incomplete"
+      ]
+    },
+    {
+      "card_id": 16,
+      "title": "Égalité devant la loi",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 17,
+      "title": "Droit naturel",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 18,
+      "title": "Liberté",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 19,
+      "title": "Liberté d'expression",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 20,
+      "title": "Révolution française",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 21,
+      "title": "1789",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 22,
+      "title": "Prise de la Bastille",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 23,
+      "title": "Serment du Jeu de paume",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 24,
+      "title": "Assemblée constituante de 1789",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 25,
+      "title": "Système solaire",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 26,
+      "title": "Soleil",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 27,
+      "title": "Terre",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 28,
+      "title": "Mercure (planète)",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 29,
+      "title": "Vénus (planète)",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 30,
+      "title": "Mars (planète)",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 31,
+      "title": "Jupiter (planète)",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 32,
+      "title": "Saturne (planète)",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 33,
+      "title": "Ceinture de Kuiper",
+      "status": "complete",
+      "warnings": []
+    },
+    {
+      "card_id": 34,
+      "title": "Nuage d'Oort",
+      "status": "complete",
+      "warnings": []
+    }
+  ]
+}

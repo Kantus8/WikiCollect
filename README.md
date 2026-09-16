@@ -37,16 +37,21 @@ La complétion complète exige les pages larges **et** les pages précises. Les 
 
 La rareté est calculée à partir d’un score logarithmique de langues et de vues, avec classement déterministe du catalogue. Les parts de cartes par rareté sont distinctes des probabilités de tirage. Un booster standard est refusé sans débit si une rareté manque. Les packs portail renormalisent les poids uniquement parmi les raretés présentes dans leur portail ; leurs taux spécifiques sont affichés.
 
-## État des données : limite réelle à connaître
+## État des données
 
-Le jeu démarre avec **34 cartes, 3 arbres, 7 branches** issus du prototype corrigé. Les statistiques de départ sont provisoires, explicitement signalées dans l’interface. Quatre références abrégées de la DDHC ont été remplacées par des pages individuelles consultables : voir [les corrections du catalogue](docs/CATALOGUE.md).
+Le jeu démarre avec **34 cartes, 3 arbres, 7 branches**. Quatre références abrégées de la DDHC ont été remplacées par des pages individuelles consultables : voir [les corrections du catalogue](docs/CATALOGUE.md).
 
-**La synchronisation réelle n’a pas pu aboutir ici : l’API Wikimedia a renvoyé HTTP 403 (politique robots).** Le résultat est conservé dans `data/ingestion-live-report.json`. Aucune page n’est artificiellement déclarée vérifiée. Les packs classiques fonctionnent avec le catalogue initial ; **conversion en tickets et ouverture de portails restent indisponibles tant que leurs associations réelles ne sont pas vérifiées**. Le ticket offert est conservé. Les tests valident ces parcours avec des réponses Wikimedia simulées, sans présenter ces simulations comme des données réelles.
+**Le catalogue est synchronisé et vérifié : 34/34 pages, 0 échec** (synchronisation du 16 septembre 2026, statistiques du mois civil complet 2026-08, politique de classement `log-rank-v1`). Le rapport durable est conservé dans `data/ingestion-report.json`. Les raretés sont calculées sur des vues réelles et se répartissent en 16 communes, 10 rares, 5 épiques, 2 légendaires et 1 mythique. **74 portails réels et 217 associations carte–portail** sont validés : conversion en tickets et ouverture de portails sont donc opérationnelles. L’avertissement de statistiques provisoires disparaît de l’interface dès que toutes les pages sont vérifiées.
 
-Pour terminer l’enrichissement, relancer la commande ci-dessous depuis un accès accepté par Wikimedia, avec un User-Agent contenant un vrai contact. Le pipeline traite redirections, langues, portails, statistiques du dernier mois civil complet, attribution des images, reprises, délais et erreurs. Il n’installe aucune tâche système automatiquement.
+Un seul avertissement subsiste : l’image de la *Déclaration des droits de l’homme et du citoyen de 1789* est masquée, ses métadonnées d’attribution étant incomplètes. C’est le comportement attendu — aucune image n’est affichée sans auteur ni licence.
+
+Les tests, eux, continuent d’utiliser des réponses Wikimedia simulées : ils valident le pipeline, ils ne constituent pas une validation live du catalogue.
+
+### Resynchroniser
+
+Wikimedia **exige un User-Agent portant un contact identifiable** ; sans lui, son edge répond HTTP 403 (politique robots) avant même d’atteindre l’API — c’est la cause du blocage rencontré lors des premières livraisons, et non une restriction d’adresse IP. Renseigner `WIKIMEDIA_USER_AGENT` dans `.env` (voir `.env.example`) avec une URL de projet ou une adresse réelle. Le pipeline traite redirections, langues, portails, statistiques du dernier mois civil complet, attribution des images, reprises, délais et erreurs. Il n’installe aucune tâche système automatiquement.
 
 ```powershell
-$env:WIKIMEDIA_USER_AGENT = 'Wikidex/1.0 (votre URL ou adresse de contact)'
 .venv\Scripts\python.exe scripts/import_catalogue.py sync --report data/ingestion-report.json
 # Mise à jour autonome tant que ce processus reste lancé :
 .venv\Scripts\python.exe scripts/import_catalogue.py worker --interval 86400
