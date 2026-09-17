@@ -1413,6 +1413,17 @@ select {
     serif;
   color: #4a633b;
 }
+.branch-size {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid #cdd6c0;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6f7d5e;
+  white-space: nowrap;
+}
 .branch-indicator {
   color: #8f9c7e;
 }

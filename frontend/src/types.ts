@@ -57,6 +57,9 @@ export type Branch = {
   full_complete: boolean;
   base_reward_claimed: boolean;
   full_reward_claimed: boolean;
+  base_reward: number;
+  full_reward: number;
+  total_pages: number;
   base_pages: Leaf[];
   full_pages: Leaf[];
 };

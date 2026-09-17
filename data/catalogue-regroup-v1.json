@@ -1,0 +1,140 @@
+{
+  "source": "editorial-regroup-v1",
+  "note": "Regroupement des micro-collections de 4 pages en grandes collections thématiques. Aucune page n'est perdue : chaque feuille d'une branche retirée rejoint une collection plus large. Les deux paliers restent identiques : base = la version large de l'information, full = les détails qui achèvent le set.",
+  "trees": [
+    {
+      "id": "einstein",
+      "branches": [
+        {
+          "id": "einstein_vie",
+          "title": "Origines, famille & formation",
+          "description": "L'Allemagne du XIXe siècle, la famille et les années d'études suisses qui forment le physicien.",
+          "base_pages": ["Allemagne", "XIXe siècle", "Empire allemand", "Munich", "École polytechnique fédérale de Zurich", "Mileva Einstein"],
+          "full_pages": ["Ulm", "1879", "14 mars", "Royaume de Wurtemberg", "Ashkénazes", "Hans Albert Einstein", "Descendance d'Albert Einstein", "Elsa Einstein", "Aarau", "Université de Zurich", "Ancienne école cantonale d'Aarau"]
+        },
+        {
+          "id": "einstein_carriere",
+          "title": "Carrière & année miraculeuse",
+          "description": "Du bureau des brevets aux académies européennes, jusqu'à l'année 1905 qui change la physique.",
+          "base_pages": ["Annus mirabilis d'Albert Einstein", "Université Charles", "Université Humboldt de Berlin", "Photon"],
+          "full_pages": ["Institut fédéral de la propriété intellectuelle", "Académie royale des sciences de Prusse", "Masse", "Nombre d'Avogadro", "Mouvement brownien"]
+        },
+        {
+          "id": "einstein_relativite",
+          "title": "Relativité : théories & équations",
+          "description": "La relativité restreinte puis générale, ses principes fondateurs et ses équations.",
+          "base_pages": ["Relativité restreinte", "Relativité générale", "Principe de relativité", "Espace-temps"],
+          "full_pages": ["E=mc2", "Principe d'équivalence", "Équation d'Einstein"]
+        },
+        {
+          "id": "einstein_quanta",
+          "title": "Quanta, pairs & contradicteurs",
+          "description": "L'effet photoélectrique, la statistique de Bose-Einstein et les grands débats avec ses pairs.",
+          "base_pages": ["Effet photoélectrique", "Mécanique quantique", "Max Planck", "Niels Bohr"],
+          "full_pages": ["Statistique de Bose-Einstein", "Condensat de Bose-Einstein", "Paradoxe EPR", "Marcel Grossmann", "Michele Besso"]
+        },
+        {
+          "id": "einstein_heritage",
+          "title": "Exil, engagements & héritage",
+          "description": "La fuite devant le nazisme, les combats publics, les distinctions et le nom laissé à la science.",
+          "base_pages": ["Nazisme", "Princeton (New Jersey)", "Pacifisme", "Prix Nobel de physique"],
+          "full_pages": ["Exil", "Citoyenneté américaine", "Institute for Advanced Study", "Sionisme", "Lettre Einstein-Szilárd", "Manifeste Russell-Einstein", "Médaille Max-Planck", "Médaille Copley", "Médaille d'or de la Royal Astronomical Society", "Personnalité de l'année selon Time Magazine", "Académie nationale des sciences", "Einstein (unité de mesure)", "Albert Einstein ATV", "Einsteinium", "(2001) Einstein"]
+        }
+      ]
+    },
+    {
+      "id": "ddhc",
+      "branches": [
+        {
+          "id": "ddhc_revolution",
+          "title": "Genèse révolutionnaire",
+          "description": "Des États généraux à la nuit du 4 août : les événements qui portent la Déclaration.",
+          "base_pages": ["Révolution française", "1789", "États généraux de 1789", "Tiers état"],
+          "full_pages": ["Prise de la Bastille", "Serment du Jeu de paume", "Assemblée constituante de 1789", "Club des Jacobins", "Nuit du 4 août 1789"]
+        },
+        {
+          "id": "ddhc_redacteurs",
+          "title": "Rédacteurs & voix de l'Assemblée",
+          "description": "Les plumes et les orateurs qui écrivent, amendent et discutent le texte de 1789.",
+          "base_pages": ["Gilbert du Motier de La Fayette", "Emmanuel-Joseph Sieyès", "Honoré-Gabriel Riqueti de Mirabeau", "Charles-Maurice de Talleyrand-Périgord"],
+          "full_pages": ["Jean-Joseph Mounier", "Jérôme Champion de Cicé", "Pierre Samuel du Pont de Nemours", "Guy-Jean-Baptiste Target"]
+        },
+        {
+          "id": "ddhc_sources",
+          "title": "Sources : Lumières & révolutions atlantiques",
+          "description": "Les philosophes des Lumières et les déclarations anglaises et américaines qui inspirent le texte.",
+          "base_pages": ["Lumières (philosophie)", "Montesquieu", "Jean-Jacques Rousseau", "Révolution américaine"],
+          "full_pages": ["Voltaire", "Charte des droits de 1689", "Déclaration d'indépendance des États-Unis", "Déclaration des droits de l'État de Virginie"]
+        },
+        {
+          "id": "ddhc_droits",
+          "title": "Droits, libertés & garanties",
+          "description": "Le cœur du texte : droits naturels, libertés publiques et garanties judiciaires.",
+          "base_pages": ["Liberté", "Droit naturel", "Droits fondamentaux", "Universalisme", "État de droit", "Égalité devant la loi"],
+          "full_pages": ["Liberté d'expression", "Souveraineté populaire", "Séparation des pouvoirs", "Volonté générale", "Citoyenneté", "Nation", "Liberté de conscience", "Liberté de religion", "Liberté de la presse", "Liberté d'opinion", "Présomption d'innocence", "Principe de légalité en droit pénal", "Rétroactivité en droit français", "Droit de propriété"]
+        },
+        {
+          "id": "ddhc_ordre_constitutionnel",
+          "title": "Ordre constitutionnel français",
+          "description": "Les constitutions successives, leurs gardiens et les territoires relevant de cet ordre selon leur statut propre.",
+          "base_pages": ["Constitution française du 4 octobre 1958", "Constitution française de 1791", "Conseil constitutionnel (France)", "France métropolitaine"],
+          "full_pages": ["Préambule de la Constitution du 27 octobre 1946", "Bloc de constitutionnalité", "Question prioritaire de constitutionnalité", "Conseil d'État (France)", "Cour de cassation (France)", "Guadeloupe", "Martinique", "La Réunion", "Guyane", "Mayotte", "Nouvelle-Calédonie", "Polynésie française"]
+        },
+        {
+          "id": "ddhc_posterite",
+          "title": "Exclusions, postérité & mémoire",
+          "description": "Les oubliés de 1789, les ripostes qu'ils inspirent et la postérité internationale des droits humains.",
+          "base_pages": ["Déclaration universelle des droits de l'homme", "Convention européenne des droits de l'homme", "Olympe de Gouges", "Esclavage en France"],
+          "full_pages": ["Déclaration des droits de la femme et de la citoyenne", "Société des amis des Noirs", "Charte des droits fondamentaux de l'Union européenne", "Convention américaine relative aux droits de l'homme", "Conseil des droits de l'homme des Nations unies", "Journée des droits de l'homme", "Place du Trocadéro-et-du-11-Novembre", "Palais de Chaillot"]
+        }
+      ]
+    },
+    {
+      "id": "solar",
+      "branches": [
+        {
+          "id": "solar_naissance",
+          "title": "Naissance & mécanique du Système solaire",
+          "description": "La nébuleuse d'origine, l'accrétion des planètes et les lois qui règlent les orbites.",
+          "base_pages": ["Formation et évolution du Système solaire", "Nébuleuse solaire", "Écliptique", "Lois de Kepler"],
+          "full_pages": ["Disque protoplanétaire", "Planétésimal", "Orbite héliocentrique", "Résonance orbitale"]
+        },
+        {
+          "id": "solar_soleil_telluriques",
+          "title": "Le Soleil & les mondes telluriques",
+          "description": "L'étoile, ses couches successives et les quatre planètes rocheuses.",
+          "base_pages": ["Soleil", "Terre", "Mars (planète)", "Noyau solaire"],
+          "full_pages": ["Mercure (planète)", "Vénus (planète)", "Photosphère", "Couronne solaire", "Vent solaire"]
+        },
+        {
+          "id": "solar_geantes_lunes",
+          "title": "Géantes & cortège de lunes",
+          "description": "Jupiter, Saturne et l'ensemble des satellites naturels, de la Lune aux lunes de Neptune.",
+          "base_pages": ["Jupiter (planète)", "Saturne (planète)", "Lune", "Satellite naturel", "Titan (lune)", "Io (lune)"],
+          "full_pages": ["Europe (lune)", "Ganymède (lune)", "Callisto (lune)", "Encelade (lune)", "Mimas (lune)", "Japet (lune)", "Titania (lune)", "Obéron (lune)", "Ariel (lune)", "Miranda (lune)", "Triton (lune)", "Néréide (lune)", "Protée (lune)", "Hippocampe (lune)", "Phobos (lune)", "Déimos (lune)"]
+        },
+        {
+          "id": "solar_petits_corps",
+          "title": "Planètes naines & petits corps",
+          "description": "Cérès, Pluton, les grands transneptuniens, la ceinture d'astéroïdes et les comètes.",
+          "base_pages": ["Ceinture d'astéroïdes", "Pluton (planète naine)", "(1) Cérès", "Comète"],
+          "full_pages": ["(4) Vesta", "(2) Pallas", "(10) Hygie", "(136108) Hauméa", "(136472) Makémaké", "(136199) Éris", "(90377) Sedna", "(90482) Orcus", "Quaoar", "Comète de Halley", "C/1995 O1 (Hale-Bopp)", "67P/Tchourioumov-Guérassimenko"]
+        },
+        {
+          "id": "solar_confins",
+          "title": "Confins & frontières",
+          "description": "Au-delà de Neptune : Kuiper, Oort, héliosphère et milieu interstellaire.",
+          "base_pages": ["Ceinture de Kuiper", "Héliosphère"],
+          "full_pages": ["Nuage d'Oort", "Héliopause", "Disque des objets épars", "Milieu interstellaire"]
+        },
+        {
+          "id": "solar_exploration",
+          "title": "Exploration & pionniers du ciel",
+          "description": "Des astronomes de la Renaissance aux sondes qui parcourent aujourd'hui le Système solaire.",
+          "base_pages": ["Nicolas Copernic", "Galilée (savant)", "Voyager 1", "Programme Viking"],
+          "full_pages": ["Johannes Kepler", "Clyde William Tombaugh", "Mariner 10", "Magellan (sonde spatiale)", "MESSENGER", "BepiColombo", "Mars Pathfinder", "Curiosity (astromobile)", "Exploration de Mars par Perseverance", "Pioneer 10", "Voyager 2", "New Horizons", "Ulysses (sonde spatiale)", "Observatoire solaire et héliosphérique", "Parker (sonde spatiale)", "Solar Orbiter"]
+        }
+      ]
+    }
+  ]
+}

@@ -124,11 +124,24 @@ def test_full_requires_base_and_rewards_are_unique(player_session):
     assert game.evaluate_milestones(session, player) == []
     game.add_card(session, player, session.get(Card, 2))
     result = game.evaluate_milestones(session, player)
-    assert [(item["tier"], item["reward"]) for item in result] == [("base", 150), ("full", 400)]
-    assert player.currency == 1150
+    assert [(item["tier"], item["reward"]) for item in result] == [("base", 75), ("full", 150)]
+    assert player.currency == 825
     game.add_card(session, player, session.get(Card, 2))
     assert game.evaluate_milestones(session, player) == []
     assert session.scalar(select(func.count()).select_from(BranchClaim)) == 2
+
+
+def test_reward_grows_with_the_size_of_the_collection(player_session):
+    session, _ = player_session
+    small = session.get(Branch, "origins")
+    assert game.branch_rewards(small) == {"base": 75, "full": 150}
+    # Same pages spread over a wider collection: more to finish, so more paid,
+    # and a better rate per page thanks to the completion bonus.
+    for card_id, tier in ((3, "base"), (4, "full"), (5, "full")):
+        session.add(BranchPage(branch_id=small.id, card_id=card_id, tier=tier, position=9))
+    session.flush()
+    session.refresh(small)
+    assert game.branch_rewards(small) == {"base": 150, "full": 450 + 30}
 
 
 def test_hidden_tree_no_reveal_and_delayed_mother_rewards(player_session):

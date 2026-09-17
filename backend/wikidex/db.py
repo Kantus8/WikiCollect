@@ -11,7 +11,8 @@ from sqlalchemy import create_engine, delete, event, select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from .models import Base, Branch, BranchPage, Card, CardAlias, CardPortal, CatalogueSeed, MacroSet, ParentSet, Portal, SchemaVersion, SetMembership, Tree
+from .models import (Base, Branch, BranchClaim, BranchPage, Card, CardAlias, CardPortal, CatalogueSeed, GameEvent, MacroSet,
+                     ParentSet, Portal, SchemaVersion, SetMembership, Tree)
 
 ROOT = Path(__file__).resolve().parents[2]
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{(ROOT / 'data' / 'wikidex.sqlite3').as_posix()}")
@@ -53,6 +54,7 @@ def init_db(bind: Engine | None = None, catalogue_path: Path | None = None, seed
             seed_catalogue(session, catalogue_path or ROOT / "data" / "catalogue.json")
             if catalogue_path is None:
                 seed_catalogue_expansion(session, ROOT / "data" / "catalogue-expansion-v1.json")
+                seed_catalogue_regroup(session, ROOT / "data" / "catalogue-regroup-v1.json")
         session.commit()
 
 
@@ -129,6 +131,90 @@ def seed_catalogue_expansion(session: Session, path: Path, seed_key: str = "edit
                     card = existing.get(title) or aliases.get(title)
                     session.add(BranchPage(branch_id=branch.id, card_id=card.id, tier=tier, position=position))
     session.add(CatalogueSeed(key=seed_key, imported_at=time.time()))
+
+
+def seed_catalogue_regroup(session: Session, path: Path, seed_key: str = "editorial-regroup-v1") -> None:
+    """Merge the 4-page micro-collections into fewer, larger collections.
+
+    This is the explicit migration that reshaping rewarded branches requires.
+    Every leaf of a retired branch is re-attached to a wider collection: the
+    manifest is refused unless it covers exactly the pages the tree already had.
+    Old receipts point at branch ids that disappear, so they are archived in the
+    player's journal and cleared; the next evaluation pays the new, larger
+    collections instead. No page, and no currency already earned, is lost.
+    """
+    if not path.exists() or session.get(CatalogueSeed, seed_key):
+        return
+    data = json.loads(path.read_text(encoding="utf-8"))
+    trees = data.get("trees")
+    if not isinstance(trees, list) or not trees:
+        raise ValueError("Le regroupement éditorial doit contenir trees[].")
+
+    aliases = {alias.title: alias.card for alias in session.scalars(select(CardAlias))}
+    by_title = {card.title: card for card in session.scalars(select(Card))} | aliases
+    layouts: list[tuple[Tree, list[dict]]] = []
+    for raw_tree in trees:
+        tree = session.get(Tree, str(raw_tree.get("id", "")))
+        if tree is None:
+            raise ValueError("Arbre cible absent du regroupement : " + str(raw_tree.get("id")))
+        branches = raw_tree.get("branches")
+        if not isinstance(branches, list) or not branches:
+            raise ValueError("Chaque arbre regroupé doit garder au moins une collection.")
+        previous = {page.card_id for branch in tree.branches for page in branch.pages}
+        collected: list[int] = []
+        layout, branch_ids = [], set()
+        for item in branches:
+            local_id = item.get("id")
+            if not isinstance(local_id, str) or not local_id.strip() or not str(item.get("title", "")).strip():
+                raise ValueError("Identité ou titre de collection invalide.")
+            branch_id = f"{tree.id}:{local_id}"
+            if branch_id in branch_ids:
+                raise ValueError("Collection répétée : " + branch_id)
+            branch_ids.add(branch_id)
+            tiers: dict[str, list[Card]] = {}
+            for tier in ("base", "full"):
+                pages = item.get(tier + "_pages")
+                if not isinstance(pages, list) or not pages or any(not isinstance(title, str) or not title.strip() for title in pages):
+                    raise ValueError("Chaque collection garde deux paliers non vides : version large puis détails.")
+                cards = []
+                for title in pages:
+                    card = by_title.get(title)
+                    if card is None:
+                        raise ValueError("Le regroupement n’invente aucune page ; titre inconnu : " + title)
+                    cards.append(card)
+                    collected.append(card.id)
+                tiers[tier] = cards
+            layout.append({"id": branch_id, "title": item["title"], "description": str(item.get("description", "")), "tiers": tiers})
+        if len(collected) != len(set(collected)):
+            raise ValueError("Une page ne peut appartenir qu’à une seule collection de l’arbre " + tree.id)
+        if set(collected) != previous:
+            raise ValueError("Le regroupement doit reprendre exactement les pages déjà publiées de l’arbre " + tree.id)
+        layouts.append((tree, layout))
+
+    now = time.time()
+    for tree, layout in layouts:
+        retired = [branch.id for branch in tree.branches]
+        claims = list(session.scalars(select(BranchClaim).where(BranchClaim.branch_id.in_(retired))))
+        archived: dict[str, list[dict]] = {}
+        for claim in claims:
+            archived.setdefault(claim.player_id, []).append({"branch_id": claim.branch_id, "tier": claim.tier, "reward": claim.reward})
+            session.delete(claim)
+        for player_id, rows in archived.items():
+            session.add(GameEvent(player_id=player_id, kind="collection_migration", created_at=now,
+                                  detail={"tree_id": tree.id, "seed": seed_key, "archived_claims": rows,
+                                          "kept_currency": round(sum(row["reward"] for row in rows), 6)}))
+        session.flush()
+        for branch in list(tree.branches):
+            session.delete(branch)
+        session.flush()
+        for position, item in enumerate(layout):
+            branch = Branch(id=item["id"], tree_id=tree.id, title=item["title"], description=item["description"], position=position)
+            session.add(branch)
+            session.flush()
+            for tier, cards in item["tiers"].items():
+                for index, card in enumerate(cards):
+                    session.add(BranchPage(branch_id=branch.id, card_id=card.id, tier=tier, position=index))
+    session.add(CatalogueSeed(key=seed_key, imported_at=now))
 
 
 def seed_catalogue(session: Session, path: Path, seed_key: str = "prototype-v1") -> None:

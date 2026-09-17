@@ -20,6 +20,13 @@ PACK_SIZE = 4
 STARTER_GRANT = 600
 RARITY_WEIGHTS = {"common": 5500, "rare": 2800, "epic": 1200, "legendary": 450, "mythic": 50}
 DUPLICATE_VALUES = {"common": 30, "rare": 75, "epic": 150, "legendary": 300, "mythic": 600}
+# Collection rewards scale with size: a large collection is longer to finish, so
+# it pays more, and its completion bonus grows with every page beyond the four
+# of the former micro-collections.
+COLLECTION_BASE_UNIT = 75
+COLLECTION_FULL_UNIT = 150
+COLLECTION_SIZE_BONUS = 30
+COLLECTION_BONUS_PIVOT = 4
 
 
 class GameError(Exception):
@@ -130,6 +137,14 @@ def visible_parent_sets(session: Session, player: Player) -> set[int]:
                               .where(Inventory.player_id == player.id, Inventory.quantity > 0)))
 
 
+def branch_rewards(branch) -> dict[str, int]:
+    """Nominal payout of each tier, proportional to the size of the collection."""
+    base_pages = sum(page.tier == "base" for page in branch.pages)
+    full_pages = sum(page.tier == "full" for page in branch.pages)
+    bonus = COLLECTION_SIZE_BONUS * max(0, base_pages + full_pages - COLLECTION_BONUS_PIVOT)
+    return {"base": COLLECTION_BASE_UNIT * base_pages, "full": COLLECTION_FULL_UNIT * full_pages + bonus}
+
+
 def branch_status(branch, owned: set[int]) -> tuple[bool, bool]:
     base = {page.card_id for page in branch.pages if page.tier == "base"}
     full = {page.card_id for page in branch.pages if page.tier == "full"}
@@ -147,7 +162,8 @@ def evaluate_milestones(session: Session, player: Player) -> list[dict]:
             continue
         for branch in tree.branches:
             base, full = branch_status(branch, owned)
-            for tier, complete, nominal in (("base", base, 150), ("full", full, 400)):
+            rewards = branch_rewards(branch)
+            for tier, complete, nominal in (("base", base, rewards["base"]), ("full", full, rewards["full"])):
                 if not complete or (branch.id, tier) in claims:
                     continue
                 actual = credit(player, nominal)
@@ -176,8 +192,11 @@ def trees_payload(session: Session, player: Player) -> dict:
             total_pages += len(branch.pages)
             collected_pages += sum(page.card_id in owned for page in branch.pages)
             completed_branches += int(full)
+            rewards = branch_rewards(branch)
             branches.append({"id": branch.id, "title": branch.title, "description": branch.description,
                              "base_complete": base, "full_complete": full,
+                             "base_reward": rewards["base"], "full_reward": rewards["full"],
+                             "total_pages": len(branch.pages),
                              "base_reward_claimed": (branch.id, "base") in claimed, "full_reward_claimed": (branch.id, "full") in claimed,
                              **{tier + "_pages": [{**card_payload(page.card, visible_set_ids=visible_sets), "owned": True} if page.card_id in owned else {"owned": False}
                                 for page in branch.pages if page.tier == tier] for tier in ("base", "full")}})

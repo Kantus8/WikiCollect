@@ -18,7 +18,7 @@ Vérification effectuée sur Windows, Python 3.14.3 et Node.js 24.14.0.
 - Pagination Wikimedia, validation d’article/portail, snapshots, reprise, collisions, erreurs HTTP et calcul déterministe de rareté.
 - Worker : reprise uniquement d’un import interrompu du mois courant couvrant le catalogue actuel ; un ancien échec ou un catalogue modifié déclenche un nouvel import complet.
 - Extension du catalogue : imports répétables, cartes nouvelles désactivées avant vérification, refus de feuilles inconnues, dupliquées ou identiques à la mère.
-- Extension livrée : 218 cartes, 53 branches, micro-branches de quatre feuilles et conservation des sept anciennes branches.
+- Extension livrée : 218 cartes, puis regroupement `editorial-regroup-v1` en 17 collections de 6 à 22 pages, 215 feuilles conservées, reçus des branches retirées archivés dans le journal et Curiosité déjà gagnée intacte.
 - Métadonnées d’image Wikimedia mal formées traitées comme un avertissement récupérable, sans interrompre une synchronisation.
 
 Deux avertissements de dépréciation proviennent du TestClient Starlette et d’AnyIO ; aucun test en échec. Les tests utilisent des bases temporaires distinctes de la collection locale.

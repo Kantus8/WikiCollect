@@ -1,9 +1,12 @@
+import json
+
 import pytest
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from backend.wikidex.catalogue import load_bundle, validate_bundle
-from backend.wikidex.db import init_db, make_engine, begin_write
-from backend.wikidex.models import Branch, BranchPage, Card, CatalogueSeed, Tree
+from backend.wikidex.db import ROOT, init_db, make_engine, begin_write, seed_catalogue_regroup
+from backend.wikidex.game import evaluate_milestones
+from backend.wikidex.models import Branch, BranchClaim, BranchPage, Card, CatalogueSeed, GameEvent, Inventory, Player, Tree
 
 
 def bundle():
@@ -35,19 +38,66 @@ def test_bundle_rejects_invalid_or_overlapping_leaves(bad_pages):
         validate_bundle(raw, set())
 
 
-def test_shipped_expansion_adds_many_short_branches_without_rewriting_old_ones(tmp_path):
+def test_shipped_catalogue_ends_on_regrouped_collections(tmp_path):
     engine = make_engine('sqlite:///' + str(tmp_path / 'expanded.sqlite3'))
     init_db(engine)
     with Session(engine) as session:
         assert session.get(CatalogueSeed, 'editorial-expansion-v1') is not None
+        assert session.get(CatalogueSeed, 'editorial-regroup-v1') is not None
         assert session.query(Card).count() == 218
-        assert session.query(Branch).count() == 53
-        new_branches = list(session.scalars(select(Branch).where(Branch.id.like('%family_origins') |
-                                                                  Branch.id.like('%ddhc_drafters') |
-                                                                  Branch.id.like('%solar_birth'))))
-        assert len(new_branches) == 3
-        assert all(len(branch.pages) == 4 for branch in new_branches)
-        assert all(not page.card.active and page.card.metrics_source == 'editorial-pending'
-                   for branch in new_branches for page in branch.pages)
-        assert session.get(Branch, 'ddhc:ddhc_articles').title == 'Droits fondamentaux & Libertés'
+        # The 53 micro-collections of four pages become 17 wide collections.
+        branches = list(session.scalars(select(Branch)))
+        assert len(branches) == 17
+        assert min(len(branch.pages) for branch in branches) == 6
+        assert max(len(branch.pages) for branch in branches) == 22
+        # Every leaf published by the prototype and its expansion is still placed.
+        assert session.query(BranchPage).count() == 215
+        assert {page.card_id for page in session.scalars(select(BranchPage))} ==                {card.id for card in session.scalars(select(Card)) if not card.is_mother}
+        for branch in branches:
+            assert {page.tier for page in branch.pages} == {'base', 'full'}
+        # Retired branch ids are gone; the merged collections carry their pages.
+        assert session.get(Branch, 'ddhc:ddhc_articles') is None
+        droits = session.get(Branch, 'ddhc:ddhc_droits')
+        assert droits.title == 'Droits, libertés & garanties'
+        assert 'Liberté' in {page.card.title for page in droits.pages if page.tier == 'base'}
+    engine.dispose()
+
+
+def test_regroup_archives_old_receipts_and_pays_the_new_collection(tmp_path):
+    engine = make_engine('sqlite:///' + str(tmp_path / 'migrated.sqlite3'))
+    init_db(engine, ROOT / 'data' / 'catalogue.json')
+    with Session(engine) as session:
+        begin_write(session)
+        player = Player(id='p1', session_hash='h1', currency=0, last_accrual=0, created_at=0)
+        session.add(player)
+        for card in session.scalars(select(Card)):
+            session.add(Inventory(player_id=player.id, card_id=card.id, quantity=1))
+        session.flush()
+        earned = sum(item['reward'] for item in evaluate_milestones(session, player))
+        assert session.query(BranchClaim).count() == 14
+        session.commit()
+    # A second boot brings the expansion and then the regrouping.
+    init_db(engine)
+    with Session(engine) as session:
+        player = session.get(Player, 'p1')
+        assert player.currency == earned  # Currency already earned is never taken back.
+        assert session.query(BranchClaim).count() == 0
+        archived = list(session.scalars(select(GameEvent).where(GameEvent.kind == 'collection_migration')))
+        assert len(archived) == 3
+        assert sum(len(event.detail['archived_claims']) for event in archived) == 14
+    engine.dispose()
+
+
+def test_regroup_refuses_a_manifest_that_drops_or_invents_a_page(tmp_path):
+    engine = make_engine('sqlite:///' + str(tmp_path / 'partial.sqlite3'))
+    init_db(engine, ROOT / 'data' / 'catalogue.json')
+    raw = json.loads((ROOT / 'data' / 'catalogue-regroup-v1.json').read_text(encoding='utf-8'))
+    path = tmp_path / 'regroup.json'
+    path.write_text(json.dumps(raw, ensure_ascii=False), encoding='utf-8')
+    with Session(engine) as session:
+        begin_write(session)
+        # The shipped manifest covers the expansion, which this database never received.
+        with pytest.raises(ValueError):
+            seed_catalogue_regroup(session, path)
+        session.rollback()
     engine.dispose()

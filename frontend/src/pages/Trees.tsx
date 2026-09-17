@@ -41,6 +41,7 @@ function BranchView({
           <GitBranch size={18} />
         </span>
         <h3>{branch.title}</h3>
+        <span className="branch-size">{branch.total_pages} pages</span>
       </div>
       <p>{branch.description}</p>
       <div className="tier-title">
@@ -52,7 +53,7 @@ function BranchView({
               Complétée
             </>
           ) : (
-            "+150 Curiosité"
+            `+${branch.base_reward} Curiosité`
           )}
         </span>
       </div>
@@ -70,7 +71,7 @@ function BranchView({
               Complétée
             </>
           ) : (
-            "+400 Curiosité"
+            `+${branch.full_reward} Curiosité`
           )}
         </span>
       </div>
@@ -82,7 +83,7 @@ function BranchView({
       <div className="branch-foot">
         {branch.full_complete
           ? "Toutes les pages sont réunies."
-          : "100 % = toutes les pages de base et les pages précises."}
+          : `100 % = les ${branch.base_pages.length} pages de base et les ${branch.full_pages.length} pages de détail, soit ${branch.base_reward + branch.full_reward} Curiosité.`}
       </div>
     </section>
   );
@@ -159,8 +160,10 @@ export function Trees({
             </div>
             <progress value={tree.collected_pages || 0} max={tree.total_pages || 1} />
             <small>
-              {tree.completed_branches} / {tree.total_branches} micro-collections terminées
-              {tree.complete ? " · Collection magistrale !" : " · Chaque branche se complète en 4 cartes"}
+              {tree.completed_branches} / {tree.total_branches} collections terminées
+              {tree.complete
+                ? " · Collection magistrale !"
+                : " · Plus une collection est vaste, plus elle rapporte"}
             </small>
           </section>
           <div className="children-label">
