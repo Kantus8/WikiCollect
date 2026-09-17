@@ -4,7 +4,7 @@ Vérification effectuée sur Windows, Python 3.14.3 et Node.js 24.14.0.
 
 ## Automatisation
 
-`python scripts/test.py --tb=short` : **68 tests réussis** le 17 septembre 2026. Le lanceur utilise un répertoire temporaire neuf dans le projet pour éviter l’incident Windows décrit en fin de document.
+`python scripts/test.py` : **70 tests réussis** le 17 septembre 2026. Le lanceur utilise un répertoire temporaire neuf dans le projet pour éviter l’incident Windows décrit en fin de document.
 
 - Taux exacts : les 10 000 valeurs de la roulette de rareté sont parcourues ; résultat 5 500/2 800/1 200/450/50.
 - +1/s fractionnaire, cinq minutes exactes pour 300, plafond et recul d’horloge.
@@ -18,6 +18,8 @@ Vérification effectuée sur Windows, Python 3.14.3 et Node.js 24.14.0.
 - Pagination Wikimedia, validation d’article/portail, snapshots, reprise, collisions, erreurs HTTP et calcul déterministe de rareté.
 - Worker : reprise uniquement d’un import interrompu du mois courant couvrant le catalogue actuel ; un ancien échec ou un catalogue modifié déclenche un nouvel import complet.
 - Extension du catalogue : imports répétables, cartes nouvelles désactivées avant vérification, refus de feuilles inconnues, dupliquées ou identiques à la mère.
+- Extension livrée : 218 cartes, 53 branches, micro-branches de quatre feuilles et conservation des sept anciennes branches.
+- Métadonnées d’image Wikimedia mal formées traitées comme un avertissement récupérable, sans interrompre une synchronisation.
 
 Deux avertissements de dépréciation proviennent du TestClient Starlette et d’AnyIO ; aucun test en échec. Les tests utilisent des bases temporaires distinctes de la collection locale.
 
@@ -42,13 +44,13 @@ Le 17 septembre, contrôle dans le navigateur après compilation : boutique fonc
 
 ## Synchronisation Wikimedia
 
-Effectuée le **16 septembre 2026** (rapport : `data/ingestion-report.json`).
+Dernière synchronisation complète effectuée le **17 septembre 2026** (rapport : `data/ingestion-report.json`).
 
-- **34/34 pages traitées, 0 échec**, statistiques du mois civil complet **2026-08**, politique `log-rank-v1`.
-- **74 portails réels** validés et **217 associations carte–portail** enregistrées ; tickets et packs portail sont donc alimentés par des données vérifiées.
-- Raretés issues des vues réelles : 16 communes, 10 rares, 5 épiques, 2 légendaires, 1 mythique.
+- **218/218 pages traitées, 0 échec**, statistiques du mois civil complet **2026-08**, politique `log-rank-v1`.
+- **258 portails réels** validés et **1 632 associations carte–portail** enregistrées ; tickets et packs portail sont donc alimentés par des données vérifiées.
+- Raretés issues des vues réelles : 107 communes, 65 rares, 31 épiques, 12 légendaires, 3 mythiques.
 - Attribution des images contrôlée par sondage (Saturne : NASA / JPL / Space Science Institute, domaine public).
-- Un avertissement, conforme aux règles : l’image de la *Déclaration des droits de l’homme et du citoyen de 1789* est masquée faute de métadonnées d’attribution complètes.
+- Onze avertissements, conformes aux règles : les images sans attribution complète (ou aux métadonnées mal formées) sont masquées, tandis que leurs cartes restent actives.
 
 Nouvelle requête réelle le **17 septembre 2026**, avec le User-Agent par défaut désormais configuré dans le code : *Albert Einstein*, page 7856, 236 langues, 36 274 vues pour août 2026 et 23 portails validés. Ce contrôle n’a pas modifié la base locale.
 

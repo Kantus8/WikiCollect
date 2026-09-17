@@ -224,6 +224,8 @@ class WikimediaClient:
         if not infos:
             raise IngestionError("Image attribution unavailable")
         info, meta = infos[0], infos[0].get("extmetadata", {})
+        if not isinstance(meta, dict):
+            raise IngestionError("Image attribution metadata is malformed")
         artist = meta.get("Attribution", meta.get("Artist", {})).get("value", "")
         return {"image_page_url": info.get("descriptionurl"), "image_artist": plain_text(artist) or None,
                 "image_license": plain_text(meta.get("LicenseShortName", {}).get("value", "")) or None}

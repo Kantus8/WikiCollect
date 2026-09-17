@@ -99,6 +99,13 @@ def test_pageview_outage_is_not_a_fabricated_zero():
             api._pageviews("New article", "2024-02")
 
 
+def test_malformed_image_metadata_is_a_recoverable_attribution_warning():
+    payload = {"query": {"pages": [{"imageinfo": [{"extmetadata": []}]}]}}
+    with client(lambda _: httpx.Response(200, json=payload)) as api:
+        with pytest.raises(IngestionError, match="metadata is malformed"):
+            api._image("Unexpected.svg")
+
+
 def test_repeated_continuation_is_bounded():
     with client(lambda _: httpx.Response(200, json={"query": {"pages": [page()]},
                                                   "continue": {"llcontinue": "same"}})) as api:

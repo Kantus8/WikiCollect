@@ -150,6 +150,19 @@ export function Trees({
             </div>
             <div className="vertical-line" />
           </div>
+          <section className={"tree-progress " + (tree.complete ? "complete" : "")}>
+            <div>
+              <span>{tree.complete ? "SET ACHEVÉ" : "PROGRESSION DU GRAND SET"}</span>
+              <strong>
+                {tree.collected_pages} / {tree.total_pages} pages
+              </strong>
+            </div>
+            <progress value={tree.collected_pages || 0} max={tree.total_pages || 1} />
+            <small>
+              {tree.completed_branches} / {tree.total_branches} micro-collections terminées
+              {tree.complete ? " · Collection magistrale !" : " · Chaque branche se complète en 4 cartes"}
+            </small>
+          </section>
           <div className="children-label">
             SETS ENFANTS · BRANCHES ET FEUILLES TERMINALES
           </div>

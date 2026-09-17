@@ -14,7 +14,7 @@ Le serveur écoute uniquement l’interface locale. Utiliser toujours le même h
 
 - Boutique : boosters de 4 cartes, révélation individuelle ou groupée, taux exacts affichés.
 - Classeur : recherche, filtre de rareté, détails et lien vers chaque article.
-- Arbres : macro-ensemble → set parent → carte mère → branches → pages terminales ; inconnues masquées aussi dans les réponses API.
+- Arbres : macro-ensemble → set parent → carte mère → micro-branches de 4 pages, jauge globale et pages inconnues masquées aussi dans les réponses API.
 - Bourse : vente unitaire/en bloc, choix parmi les portails vérifiés, tickets et packs ciblés.
 - Journal, son facultatif, interface mobile et navigation clavier.
 - 21 tables relationnelles avec contraintes, index, inventaire, transactions, récompenses uniques, historique de statistiques et reprise d’ingestion.
@@ -40,9 +40,9 @@ La rareté est calculée à partir d’un score logarithmique de langues et de v
 
 ## État des données
 
-Le jeu démarre avec **34 cartes, 3 arbres, 7 branches**. Quatre références abrégées de la DDHC ont été remplacées par des pages individuelles consultables : voir [les corrections du catalogue](docs/CATALOGUE.md).
+Le jeu démarre avec **218 cartes, 3 grands arbres et 53 branches**. Les **46 nouvelles micro-branches** comportent exactement quatre cartes (2 au palier de base, puis 2 au palier complet) : les étapes sont rapides à lire et à terminer, tandis que chaque grand set représente 61 à 81 pages. Quatre références abrégées de la DDHC ont été remplacées par des pages individuelles consultables : voir [les corrections et l’extension du catalogue](docs/CATALOGUE.md).
 
-**Le catalogue est synchronisé et vérifié : 34/34 pages, 0 échec** (synchronisation du 16 septembre 2026, statistiques du mois civil complet 2026-08, politique de classement `log-rank-v1`). Le rapport durable est conservé dans `data/ingestion-report.json`. Les raretés sont calculées sur des vues réelles et se répartissent en 16 communes, 10 rares, 5 épiques, 2 légendaires et 1 mythique. **74 portails réels et 217 associations carte–portail** sont validés : conversion en tickets et ouverture de portails sont donc opérationnelles. L’avertissement de statistiques provisoires disparaît de l’interface dès que toutes les pages sont vérifiées.
+Le catalogue complet est synchronisé et vérifié : **218/218 pages, 0 échec** (synchronisation du 17 septembre 2026, statistiques du mois civil complet 2026-08, politique de classement `log-rank-v1`). Les raretés se répartissent en 107 communes, 65 rares, 31 épiques, 12 légendaires et 3 mythiques. **258 portails réels et 1 632 associations carte–portail** sont validés. Le rapport durable est conservé dans `data/ingestion-report.json` ; 11 illustrations sont volontairement masquées faute d’une attribution Wikimedia complète, sans désactiver leurs cartes.
 
 Un seul avertissement subsiste : l’image de la *Déclaration des droits de l’homme et du citoyen de 1789* est masquée, ses métadonnées d’attribution étant incomplètes. C’est le comportement attendu — aucune image n’est affichée sans auteur ni licence.
 

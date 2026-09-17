@@ -170,15 +170,22 @@ def trees_payload(session: Session, player: Player) -> dict:
             result.append({"id": public_id, "locked": True})
             continue
         parent, branches = tree.parent_set, []
+        collected_pages = total_pages = completed_branches = 0
         for branch in tree.branches:
             base, full = branch_status(branch, owned)
+            total_pages += len(branch.pages)
+            collected_pages += sum(page.card_id in owned for page in branch.pages)
+            completed_branches += int(full)
             branches.append({"id": branch.id, "title": branch.title, "description": branch.description,
                              "base_complete": base, "full_complete": full,
                              "base_reward_claimed": (branch.id, "base") in claimed, "full_reward_claimed": (branch.id, "full") in claimed,
                              **{tier + "_pages": [{**card_payload(page.card, visible_set_ids=visible_sets), "owned": True} if page.card_id in owned else {"owned": False}
                                 for page in branch.pages if page.tier == tier] for tier in ("base", "full")}})
         result.append({"id": public_id, "locked": False, "macro": {"id": parent.macro.id, "title": parent.macro.title},
-                       "parent_set": {"id": parent.id, "title": parent.title}, "mother": card_payload(tree.mother, visible_set_ids=visible_sets), "branches": branches})
+                       "parent_set": {"id": parent.id, "title": parent.title}, "mother": card_payload(tree.mother, visible_set_ids=visible_sets),
+                       "collected_pages": collected_pages, "total_pages": total_pages,
+                       "completed_branches": completed_branches, "total_branches": len(branches),
+                       "complete": bool(branches) and completed_branches == len(branches), "branches": branches})
     return {"trees": result}
 
 

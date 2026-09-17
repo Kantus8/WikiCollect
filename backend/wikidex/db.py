@@ -51,7 +51,84 @@ def init_db(bind: Engine | None = None, catalogue_path: Path | None = None, seed
             session.add(SchemaVersion(version=1, applied_at=time.time()))
         if seed:
             seed_catalogue(session, catalogue_path or ROOT / "data" / "catalogue.json")
+            if catalogue_path is None:
+                seed_catalogue_expansion(session, ROOT / "data" / "catalogue-expansion-v1.json")
         session.commit()
+
+
+def seed_catalogue_expansion(session: Session, path: Path, seed_key: str = "editorial-expansion-v1") -> None:
+    """Add small new branches to shipped trees without invalidating old rewards.
+
+    Existing branches are deliberately left untouched: players keep every
+    milestone they already earned. New articles stay out of boosters until the
+    Wikimedia ingestion pipeline has validated them.
+    """
+    if not path.exists() or session.get(CatalogueSeed, seed_key):
+        return
+    data = json.loads(path.read_text(encoding="utf-8"))
+    trees = data.get("trees")
+    if not isinstance(trees, list):
+        raise ValueError("L’extension éditoriale doit contenir trees[].")
+
+    existing = {card.title: card for card in session.scalars(select(Card))}
+    aliases = {alias.title: alias.card for alias in session.scalars(select(CardAlias))}
+    referenced_titles: list[str] = []
+    branch_ids: set[str] = set()
+    for raw_tree in trees:
+        tree = session.get(Tree, str(raw_tree.get("id", "")))
+        if tree is None:
+            raise ValueError("Arbre cible absent de l’extension : " + str(raw_tree.get("id")))
+        branches = raw_tree.get("branches")
+        if not isinstance(branches, list) or not branches:
+            raise ValueError("Chaque arbre étendu doit recevoir au moins une branche.")
+        for item in branches:
+            local_id = item.get("id")
+            if not isinstance(local_id, str) or not local_id.strip():
+                raise ValueError("Identité de branche d’extension invalide.")
+            branch_id = f"{tree.id}:{local_id}"
+            if branch_id in branch_ids:
+                raise ValueError("Branche d’extension répétée : " + branch_id)
+            branch_ids.add(branch_id)
+            seen: set[str] = set()
+            for tier in ("base", "full"):
+                pages = item.get(tier + "_pages")
+                if not isinstance(pages, list) or not pages or any(not isinstance(title, str) or not title.strip() for title in pages):
+                    raise ValueError("Chaque micro-branche exige deux paliers non vides.")
+                if len(pages) != len(set(pages)) or set(pages) & seen:
+                    raise ValueError("Une page doit apparaître une seule fois dans une micro-branche.")
+                seen.update(pages)
+                referenced_titles.extend(pages)
+
+    for title in dict.fromkeys(referenced_titles):
+        if title in existing or title in aliases:
+            continue
+        card = Card(title=title, url="https://fr.wikipedia.org/wiki/" + quote(title.replace(" ", "_")),
+                    languages=0, monthly_views=0, rarity="common",
+                    snippet="Article en attente de vérification Wikipédia.", image_url=None,
+                    is_mother=False, verified=False, metrics_source="editorial-pending",
+                    updated_at=0, active=False)
+        session.add(card)
+        session.flush()
+        session.add(CardAlias(title=title, card_id=card.id))
+        existing[title] = card
+
+    for raw_tree in trees:
+        tree = session.get(Tree, str(raw_tree["id"]))
+        next_position = max((branch.position for branch in tree.branches), default=-1) + 1
+        for item in raw_tree["branches"]:
+            branch_id = f"{tree.id}:{item['id']}"
+            if session.get(Branch, branch_id):
+                continue
+            branch = Branch(id=branch_id, tree_id=tree.id, title=item["title"],
+                            description=item.get("description", ""), position=next_position)
+            next_position += 1
+            session.add(branch)
+            session.flush()
+            for tier in ("base", "full"):
+                for position, title in enumerate(item[tier + "_pages"]):
+                    card = existing.get(title) or aliases.get(title)
+                    session.add(BranchPage(branch_id=branch.id, card_id=card.id, tier=tier, position=position))
+    session.add(CatalogueSeed(key=seed_key, imported_at=time.time()))
 
 
 def seed_catalogue(session: Session, path: Path, seed_key: str = "prototype-v1") -> None:

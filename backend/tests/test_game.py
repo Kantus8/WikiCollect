@@ -150,7 +150,9 @@ def test_missing_leaf_has_no_identity_or_metadata(player_session):
     session, player = player_session
     game.add_card(session, player, session.get(Card, 1))
     session.flush()
-    branch = game.trees_payload(session, player)["trees"][0]["branches"][0]
+    tree = game.trees_payload(session, player)["trees"][0]
+    assert (tree["collected_pages"], tree["total_pages"], tree["completed_branches"], tree["total_branches"], tree["complete"]) == (0, 2, 0, 1, False)
+    branch = tree["branches"][0]
     assert branch["base_pages"] == [{"owned": False}]
     assert branch["full_pages"] == [{"owned": False}]
     game.add_card(session, player, session.get(Card, 2))
@@ -158,6 +160,10 @@ def test_missing_leaf_has_no_identity_or_metadata(player_session):
     branch = game.trees_payload(session, player)["trees"][0]["branches"][0]
     assert branch["base_pages"][0]["title"] == "Page rare"
     assert branch["full_pages"] == [{"owned": False}]
+    game.add_card(session, player, session.get(Card, 3))
+    session.flush()
+    tree = game.trees_payload(session, player)["trees"][0]
+    assert (tree["collected_pages"], tree["completed_branches"], tree["complete"]) == (2, 1, True)
 
 
 def test_parent_sets_are_explicit_and_separate_from_child_branches(player_session):

@@ -66,6 +66,11 @@ export type Tree = {
   macro?: { id: string | number; title: string };
   parent_set?: { id: string | number; title: string };
   mother?: Card;
+  collected_pages?: number;
+  total_pages?: number;
+  completed_branches?: number;
+  total_branches?: number;
+  complete?: boolean;
   branches?: Branch[];
 };
 export type Milestone = {
