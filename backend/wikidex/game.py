@@ -11,7 +11,7 @@ from typing import Callable
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
-from .models import BranchClaim, Card, CardAlias, CardPortal, GameEvent, Inventory, Player, Portal, Ticket, Tree
+from .models import Branch, BranchClaim, Card, CardAlias, CardPortal, GameEvent, Inventory, Player, Portal, Ticket, Tree
 
 CURRENCY_CAP = 3000
 PASSIVE_RATE = 1.0
@@ -277,6 +277,20 @@ def convert_duplicate(session: Session, player: Player, card_id: int, portal_id:
     return {"state": state_payload(session, player)}
 
 
+def export_save(session: Session, player: Player) -> dict:
+    """Portable gameplay state, including reward receipts to prevent restore payouts."""
+    return {"format": "wikidex-save", "version": 2, "currency": round(player.currency, 6),
+            "inventory": {row.card.title: row.quantity for row in session.scalars(
+                select(Inventory).where(Inventory.player_id == player.id, Inventory.quantity > 0))},
+            "portalTickets": {row.portal.title: row.quantity for row in session.scalars(
+                select(Ticket).where(Ticket.player_id == player.id, Ticket.quantity > 0))},
+            "packs_opened": player.packs_opened,
+            "branch_claims": [{"branch_id": row.branch_id, "tier": row.tier, "reward": row.reward,
+                               "claimed_at": row.claimed_at} for row in session.scalars(
+                select(BranchClaim).where(BranchClaim.player_id == player.id)
+                .order_by(BranchClaim.branch_id, BranchClaim.tier))]}
+
+
 def import_prototype(session: Session, player: Player, payload: dict, legacy_aliases: dict[str, str] | None = None) -> dict:
     if player.imported_at is not None:
         raise GameError("Cette sauvegarde a déjà été migrée.", "already_imported")
@@ -311,7 +325,20 @@ def import_prototype(session: Session, player: Player, payload: dict, legacy_ali
                 session.add(Ticket(player_id=player.id, portal_id=portal.id, quantity=count))
     player.currency = max(0, min(CURRENCY_CAP, float(payload["currency"])))
     player.imported_at = time.time()
-    milestones = evaluate_milestones(session, player)
+    if payload.get("format") == "wikidex-save" and payload.get("version") == 2:
+        owned = owned_ids(session, player)
+        receipts = set()
+        for claim in payload["branch_claims"]:
+            key = (claim["branch_id"], claim["tier"])
+            branch = session.get(Branch, claim["branch_id"])
+            if key in receipts or branch is None or branch.tree.mother_card_id not in owned:
+                raise GameError("Historique de récompenses incompatible avec cette collection.", "invalid_save", 422)
+            receipts.add(key)
+            session.add(BranchClaim(player_id=player.id, **claim))
+        player.packs_opened = payload["packs_opened"]
+        milestones = []  # Restoring never awards already-collected bonuses again.
+    else:
+        milestones = evaluate_milestones(session, player)
     record_event(session, player, "import", {"ignored_titles": ignored, "milestones": len(milestones)})
     return {"state": state_payload(session, player), "ignored_titles": ignored, "milestones": milestones}
 

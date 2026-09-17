@@ -8,7 +8,7 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Annotated, Callable
+from typing import Annotated, Callable, Literal
 
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import FileResponse, JSONResponse
@@ -52,10 +52,38 @@ class ConvertRequest(StrictModel):
     portal_id: PositiveId
 
 
+class SavedClaim(StrictModel):
+    branch_id: Annotated[str, Field(min_length=1, max_length=256)]
+    tier: Literal["base", "full"]
+    reward: Annotated[float, Field(allow_inf_nan=False, ge=0, le=400)]
+    claimed_at: Annotated[float, Field(allow_inf_nan=False, ge=0)]
+
+    @model_validator(mode="after")
+    def tier_reward(self):
+        if self.tier == "base" and self.reward > 150:
+            raise ValueError("Une récompense de base ne dépasse pas 150.")
+        return self
+
+
 class ImportRequest(StrictModel):
     currency: Annotated[float, Field(allow_inf_nan=False, ge=0, le=3000)]
     inventory: Annotated[dict[str, ImportCount], Field(max_length=5000)]
     portalTickets: Annotated[dict[str, ImportCount], Field(max_length=1000)] = Field(default_factory=dict)
+    format: Literal["wikidex-save"] | None = None
+    version: Literal[2] | None = None
+    branch_claims: Annotated[list[SavedClaim], Field(max_length=10000)] = Field(default_factory=list)
+    packs_opened: Annotated[int, Field(strict=True, ge=0, le=2147483647)] = 0
+
+    @model_validator(mode="after")
+    def save_format(self):
+        if self.format is None and self.version is None:
+            if self.branch_claims or self.packs_opened:
+                raise ValueError("L’historique des récompenses exige le format Wikidex version 2.")
+        elif self.format != "wikidex-save" or self.version != 2:
+            raise ValueError("Format de sauvegarde Wikidex invalide.")
+        elif not {"branch_claims", "packs_opened"} <= self.model_fields_set:
+            raise ValueError("Sauvegarde incomplète : historique des récompenses et packs requis.")
+        return self
 
 
 def create_app(bind: Engine | None = None, *, seed: bool = True, import_enabled: bool | None = None, static_dir: Path | None = None) -> FastAPI:
@@ -141,6 +169,16 @@ def create_app(bind: Engine | None = None, *, seed: bool = True, import_enabled:
             begin_write(session)
             player, _ = game.get_player(session, request.cookies.get(SESSION_COOKIE))
             return game.trees_payload(session, player)
+
+    @app.get("/api/export")
+    def export_save(request: Request):
+        with Session(bind, expire_on_commit=False) as session:
+            begin_write(session)
+            player, _ = game.get_player(session, request.cookies.get(SESSION_COOKIE))
+            game.accrue(player)
+            result = game.export_save(session, player)
+            session.commit()
+            return result
 
     @app.post("/api/packs")
     def packs(request: Request, body: PackRequest):

@@ -109,6 +109,9 @@ function MarketRow({
 }) {
   const portals = card.portals.filter((p) => p.verified);
   const [selected, setSelected] = useState<number>(portals[0]?.id || 0);
+  const selectedPortal = portals.some((p) => p.id === selected)
+    ? selected
+    : portals[0]?.id || 0;
   return (
     <article className={"market-row " + card.rarity}>
       <button className="market-card-name" onClick={() => onDetail(card)}>
@@ -136,7 +139,7 @@ function MarketRow({
       <div className="convert-action">
         <select
           aria-label={"Portail pour " + card.title}
-          value={selected}
+          value={selectedPortal}
           onChange={(e) => setSelected(Number(e.target.value))}
           disabled={!portals.length}
         >
@@ -150,7 +153,7 @@ function MarketRow({
         <button
           className="secondary"
           disabled={busy || !portals.length}
-          onClick={() => convert(card.id, selected || portals[0].id)}
+          onClick={() => convert(card.id, selectedPortal)}
         >
           <TicketIcon size={16} />
           Convertir 1

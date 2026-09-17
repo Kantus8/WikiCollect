@@ -14,12 +14,13 @@ sys.path.insert(0, str(ROOT))
 
 # Match the server's optional local environment configuration.
 from dotenv import load_dotenv
-load_dotenv(ROOT / ".env")
+if __name__ == "__main__":
+    load_dotenv(ROOT / ".env")
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from backend.wikidex.db import SessionLocal, init_db
 from backend.wikidex.ingestion import WikimediaClient, last_complete_month, run_report, sync_catalogue
-from backend.wikidex.models import IngestionRun
+from backend.wikidex.models import Card, IngestionItem, IngestionRun
 
 
 @contextmanager
@@ -52,11 +53,30 @@ def worker_lock():
 
 
 def resumable_run(month: str) -> int | None:
+    """Resume only the latest interrupted full pass of the current catalogue.
+
+    A finished pass with errors has already tried every article. Starting a new
+    pass next cycle also refreshes successful pages and picks up catalogue
+    additions, even when another article remains permanently blocked.
+    """
     with SessionLocal() as session:
-        runs = session.scalars(select(IngestionRun).where(IngestionRun.status.in_(("running", "completed_with_errors")))
-                               .order_by(IngestionRun.id.desc()))
-        for run in runs:
-            if json.loads(run.detail).get("month") == month:
+        run = session.scalar(select(IngestionRun).order_by(IngestionRun.id.desc()).limit(1))
+        if run is None or run.status != "running":
+            return None
+        detail = json.loads(run.detail)
+        if detail.get("month") != month:
+            return None
+        if detail.get("version") == 2:
+            item_cards = select(IngestionItem.card_id).where(IngestionItem.run_id == run.id)
+            item_count = session.scalar(select(func.count()).select_from(IngestionItem).where(IngestionItem.run_id == run.id))
+            card_count = session.scalar(select(func.count()).select_from(Card))
+            missing = session.scalar(select(Card.id).where(~Card.id.in_(item_cards)).limit(1))
+            if item_count == card_count and missing is None:
+                return run.id
+        elif detail.get("version") == 1:
+            # sync_catalogue upgrades legacy checkpoints when they are resumed.
+            item_ids = {item["card_id"] for item in detail.get("items", [])}
+            if item_ids == set(session.scalars(select(Card.id))):
                 return run.id
     return None
 

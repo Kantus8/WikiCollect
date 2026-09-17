@@ -19,6 +19,7 @@ Le serveur écoute uniquement l’interface locale. Utiliser toujours le même h
 - Journal, son facultatif, interface mobile et navigation clavier.
 - 21 tables relationnelles avec contraintes, index, inventaire, transactions, récompenses uniques, historique de statistiques et reprise d’ingestion.
 - Import unique de l’ancien prototype, export JSON, sauvegarde cohérente de la base SQLite.
+- Sauvegarde JSON version 2 : collection, tickets, solde, compteur de boosters et bonus déjà reçus ; restauration sans nouveau versement des récompenses.
 
 ## Règles conservées
 
@@ -51,6 +52,8 @@ Les tests, eux, continuent d’utiliser des réponses Wikimedia simulées : ils 
 
 Wikimedia **exige un User-Agent portant un contact identifiable** ; sans lui, son edge répond HTTP 403 (politique robots) avant même d’atteindre l’API — c’est la cause du blocage rencontré lors des premières livraisons, et non une restriction d’adresse IP. Renseigner `WIKIMEDIA_USER_AGENT` dans `.env` (voir `.env.example`) avec une URL de projet ou une adresse réelle. Le pipeline traite redirections, langues, portails, statistiques du dernier mois civil complet, attribution des images, reprises, délais et erreurs. Il n’installe aucune tâche système automatiquement.
 
+Le client, `.env.example` et Docker utilisent maintenant par défaut le contact public `https://github.com/Kantus8/WikiCollect`. Cette adresse identifie le logiciel ; les requêtes restent envoyées aux API Wikimedia. La valeur personnalisée de `.env` ou `--user-agent` reste prioritaire.
+
 ```powershell
 .venv\Scripts\python.exe scripts/import_catalogue.py sync --report data/ingestion-report.json
 # Mise à jour autonome tant que ce processus reste lancé :
@@ -74,7 +77,7 @@ npm ci --prefix frontend
 npm run dev --prefix frontend
 
 # Vérifications
-.venv\Scripts\python.exe -m pytest backend/tests -q
+.venv\Scripts\python.exe scripts/test.py
 npm run build --prefix frontend
 ```
 
@@ -86,7 +89,9 @@ La documentation HTTP se trouve sur **http://localhost:8000/docs**. En version c
 .venv\Scripts\python.exe scripts/backup.py
 ```
 
-Ce script utilise l’API de sauvegarde SQLite et prend en compte le journal WAL. Les copies horodatées vont dans `data/backups`. Pour restaurer une copie complète, arrêter le serveur et tout worker, sauvegarder les fichiers actuels, puis restaurer la copie en tant que `data/wikidex.sqlite3` sans anciens fichiers `-wal`/`-shm`. Le JSON de collection s’importe sur une partie vierge ; il ne constitue pas une sauvegarde intégrale des sessions/journaux.
+Ce script utilise l’API de sauvegarde SQLite et prend en compte le journal WAL. Les copies horodatées vont dans `data/backups`. Pour restaurer une copie complète, arrêter le serveur et tout worker, sauvegarder les fichiers actuels, puis restaurer la copie en tant que `data/wikidex.sqlite3` sans anciens fichiers `-wal`/`-shm`. Le JSON version 2 s’importe sur une partie vierge et préserve la progression et les récompenses déjà acquises ; il ne constitue pas une sauvegarde intégrale des sessions/journaux. L’ancien format du prototype reste accepté séparément.
+
+`scripts/test.py` utilise un nouveau dossier sous `data/test-runs` à chaque exécution, sans dépendre du dossier temporaire Windows ni du cache pytest existant. Cela évite les erreurs de permissions constatées sur ce poste, sans supprimer de fichiers ou modifier leurs droits.
 
 ## Déploiement ultérieur
 

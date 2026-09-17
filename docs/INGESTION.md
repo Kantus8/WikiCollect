@@ -37,7 +37,7 @@ L’import est transactionnel et idempotent par empreinte du manifeste. Il rejet
 .venv\Scripts\python.exe scripts/import_catalogue.py worker --interval 86400 --report data/ingestion-report.json
 ```
 
-Ce processus effectue un travail immédiatement puis attend 24 heures après sa fin. Il reprend le dernier travail incomplet du même mois, sinon crée un travail. Il s’arrête avec Ctrl+C ; les articles déjà validés restent sauvegardés. `--max-runs 1` permet une seule exécution, utile pour vérifier l’intégration au Planificateur de tâches Windows. Une tâche planifiée ou cron peut simplement lancer la commande `sync` une fois par jour. Aucun service externe ni automatisation Codex n’est nécessaire, et le programme n’installe pas de tâche système à votre insu.
+Ce processus effectue un travail immédiatement puis attend 24 heures après sa fin. Il reprend uniquement le dernier travail `running`, interrompu dans le même mois, qui couvre encore exactement le catalogue courant. Si une passe est terminée avec des erreurs, si de nouvelles cartes ont été ajoutées ou si un travail plus récent existe, il crée une nouvelle passe complète. Un ancien échec ou une collision permanente ne peut donc pas monopoliser les cycles ni empêcher l’actualisation des autres pages. La reprise manuelle `sync --resume ID` reste disponible pour réessayer uniquement les éléments inachevés du travail choisi. Il s’arrête avec Ctrl+C ; les articles déjà validés restent sauvegardés. `--max-runs 1` permet une seule exécution, utile pour vérifier l’intégration au Planificateur de tâches Windows. Une tâche planifiée ou cron peut simplement lancer la commande `sync` une fois par jour. Aucun service externe ni automatisation Codex n’est nécessaire, et le programme n’installe pas de tâche système à votre insu.
 
 Un verrou système de fichier empêche deux commandes de synchronisation dans le même workspace. Il est libéré même après un arrêt brutal. En déploiement, conserver **un seul worker** pour la même base : le verrou local ne coordonne pas plusieurs machines. `DATABASE_URL` choisit SQLite par défaut ou PostgreSQL comme pour le serveur.
 
@@ -78,6 +78,8 @@ Chaque article et son point de reprise sont validés dans la même transaction. 
 Le catalogue, ses relations et son historique sont relationnels. Le travail reste volontairement un seul worker local ; le passage à des millions d’articles demande ingestion par lots depuis les dumps Wikimedia et une file de travail distribuée. L’API publique n’est pas destinée à répliquer Wikipédia par requêtes individuelles.
 
 ### Exigence de User-Agent
+
+Le contact public du dépôt `https://github.com/Kantus8/WikiCollect` est désormais fourni par défaut dans le client, l’exemple d’environnement et Docker. `WIKIMEDIA_USER_AGENT` et `--user-agent` peuvent le remplacer. GitHub n’est pas un proxy de données : les endpoints restent ceux de Wikimedia. Le 17 septembre 2026, une nouvelle vérification avec ce défaut, sans écrire dans la base, a récupéré Albert Einstein (`pageid=7856`), les vues 2026-08 et ses 23 associations à des portails.
 
 L’edge Wikimedia (HAProxy) refuse toute requête dont le User-Agent ne comporte pas de contact identifiable, et renvoie **HTTP 403** avec un message de politique robots — avant même que l’API soit atteinte. Le cas a été constaté puis levé ici :
 

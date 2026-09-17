@@ -12,4 +12,5 @@ data/*.lock
 data/*.log
 data/*.pid
 data/backups/
+data/test-runs/
 .DS_Store

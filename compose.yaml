@@ -29,7 +29,7 @@ services:
     profiles: [sync]
     environment:
       DATABASE_URL: postgresql+psycopg://wikidex:${POSTGRES_PASSWORD}@db:5432/wikidex
-      WIKIMEDIA_USER_AGENT: ${WIKIMEDIA_USER_AGENT:-Wikidex/1.0}
+      WIKIMEDIA_USER_AGENT: ${WIKIMEDIA_USER_AGENT:-Wikidex/1.0 (+https://github.com/Kantus8/WikiCollect)}
     command: [python, scripts/import_catalogue.py, worker, --interval, "86400"]
     depends_on:
       app:

@@ -40,7 +40,7 @@ export function Store({
             LE BOOSTER CLASSIQUE
           </div>
           <h2>
-            Le hasard fait
+            Le hasard fait{" "}
             <br />
             bien les <em>connaissances.</em>
           </h2>

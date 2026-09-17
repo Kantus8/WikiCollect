@@ -13,6 +13,20 @@ from backend.wikidex.models import Base, Card, CardPortal, IngestionItem, Ingest
 from backend.wikidex.popularity import assign_rarities, popularity_score, rarity_counts
 
 
+def test_default_user_agent_identifies_project_without_env(monkeypatch):
+    monkeypatch.delenv("WIKIMEDIA_USER_AGENT", raising=False)
+    seen = []
+    with client(lambda request: (seen.append(request.headers['User-Agent']) or httpx.Response(200, json={}))) as api:
+        api._request("https://fr.wikipedia.org/w/api.php")
+    assert seen == ["Wikidex/1.0 (+https://github.com/Kantus8/WikiCollect)"]
+
+
+def test_explicit_user_agent_takes_priority_over_environment(monkeypatch):
+    monkeypatch.setenv('WIKIMEDIA_USER_AGENT', 'Configured/1.0 (https://example.org/contact)')
+    with client(lambda _: httpx.Response(200, json={}), user_agent='Override/1.0 (https://example.com/contact)') as api:
+        assert api.user_agent == 'Override/1.0 (https://example.com/contact)'
+
+
 def client(handler, **kwargs):
     return WikimediaClient(transport=httpx.MockTransport(handler), min_interval=0, sleep=lambda _: None, **kwargs)
 

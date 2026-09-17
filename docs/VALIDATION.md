@@ -4,7 +4,7 @@ Vérification effectuée sur Windows, Python 3.14.3 et Node.js 24.14.0.
 
 ## Automatisation
 
-`python -m pytest backend/tests -q` : **50 tests réussis** au dernier passage (voir l’incident d’environnement en fin de document).
+`python scripts/test.py --tb=short` : **68 tests réussis** le 17 septembre 2026. Le lanceur utilise un répertoire temporaire neuf dans le projet pour éviter l’incident Windows décrit en fin de document.
 
 - Taux exacts : les 10 000 valeurs de la roulette de rareté sont parcourues ; résultat 5 500/2 800/1 200/450/50.
 - +1/s fractionnaire, cinq minutes exactes pour 300, plafond et recul d’horloge.
@@ -14,7 +14,9 @@ Vérification effectuée sur Windows, Python 3.14.3 et Node.js 24.14.0.
 - Brouillard des arbres et des feuilles, titres et métadonnées absents côté API.
 - Deux paliers uniques, feuilles précises obtenues avant base, déblocage tardif de mère, doublons intra-pack correctement identifiés.
 - Import borné, unique, local ; alias préservés après redirection.
+- Sauvegarde JSON v2 : restauration du solde, des exemplaires, des tickets, du nombre de packs et des récompenses déjà attribuées, sans nouveau versement ; rollback des reçus invalides.
 - Pagination Wikimedia, validation d’article/portail, snapshots, reprise, collisions, erreurs HTTP et calcul déterministe de rareté.
+- Worker : reprise uniquement d’un import interrompu du mois courant couvrant le catalogue actuel ; un ancien échec ou un catalogue modifié déclenche un nouvel import complet.
 - Extension du catalogue : imports répétables, cartes nouvelles désactivées avant vérification, refus de feuilles inconnues, dupliquées ou identiques à la mère.
 
 Deux avertissements de dépréciation proviennent du TestClient Starlette et d’AnyIO ; aucun test en échec. Les tests utilisent des bases temporaires distinctes de la collection locale.
@@ -36,6 +38,8 @@ Parcours manuels contrôlés avec les outils du navigateur :
 
 Le lanceur Windows et l’arrêt ont été exécutés avec succès, puis le serveur a été relancé. La sauvegarde SQLite a produit une copie cohérente horodatée via l’API de backup.
 
+Le 17 septembre, contrôle dans le navigateur après compilation : boutique fonctionnelle, portail Physique disponible, 34/34 pages vérifiées et nouveaux libellés de restauration/export visibles. Aucun achat n’a été effectué dans la partie locale pendant ce contrôle.
+
 ## Synchronisation Wikimedia
 
 Effectuée le **16 septembre 2026** (rapport : `data/ingestion-report.json`).
@@ -46,6 +50,10 @@ Effectuée le **16 septembre 2026** (rapport : `data/ingestion-report.json`).
 - Attribution des images contrôlée par sondage (Saturne : NASA / JPL / Space Science Institute, domaine public).
 - Un avertissement, conforme aux règles : l’image de la *Déclaration des droits de l’homme et du citoyen de 1789* est masquée faute de métadonnées d’attribution complètes.
 
+Nouvelle requête réelle le **17 septembre 2026**, avec le User-Agent par défaut désormais configuré dans le code : *Albert Einstein*, page 7856, 236 langues, 36 274 vues pour août 2026 et 23 portails validés. Ce contrôle n’a pas modifié la base locale.
+
+Un parcours API sur une copie isolée de la base synchronisée a également vérifié l’achat d’une carte du portail Physique contre un ticket, la conversion d’un doublon en ticket et une restauration JSON v2 sans perte du compteur de packs ni nouveau crédit de palier.
+
 Les échecs HTTP 403 des livraisons précédentes venaient du User-Agent par défaut, dépourvu de contact identifiable : l’edge Wikimedia (HAProxy) rejetait la requête avant l’API. Vérifié par comparaison directe — un User-Agent portant une URL de contact obtient 200 sur `fr.wikipedia.org/w/api.php` comme sur l’API pageviews, là où un User-Agent de navigateur générique reste refusé. Ce n’était pas un blocage d’adresse IP. Le rapport de l’échec initial reste conservé dans `data/ingestion-live-report.json`.
 
 ## Limites observées
@@ -55,4 +63,4 @@ Les échecs HTTP 403 des livraisons précédentes venaient du User-Agent par dé
 
 ## Incident d’environnement
 
-Sur ce poste, `pytest backend/tests -q` a d’abord échoué avec **37 erreurs de setup** : `PermissionError [WinError 5]` sur `%TEMP%\pytest-of-Kantus`, dossier résiduel devenu illisible pour son propre compte — la lecture de sa liste de contrôle d’accès était elle-même refusée. Aucun rapport avec le code : seuls passaient les 13 tests n’ayant besoin d’aucun fichier temporaire. Après suppression du dossier depuis une console administrateur, pytest l’a recréé proprement et la suite repasse en entier. Contournement sans élévation, si le cas se reproduit : `PYTEST_DEBUG_TEMPROOT` pointé vers un dossier accessible, ou `--basetemp`.
+Sur ce poste, `pytest backend/tests -q` a d’abord échoué avec **37 erreurs de setup** : `PermissionError [WinError 5]` sur `%TEMP%\pytest-of-Kantus`, dossier résiduel devenu illisible pour son propre compte — la lecture de sa liste de contrôle d’accès était elle-même refusée. Aucun rapport avec le code : seuls passaient les 13 tests n’ayant besoin d’aucun fichier temporaire. Après suppression du dossier depuis une console administrateur, pytest l’avait recréé proprement. Le problème s’est reproduit le 17 septembre ; le lanceur `python scripts/test.py` l’évite sans élévation, sans suppression de dossiers existants et sans modification des permissions Windows.

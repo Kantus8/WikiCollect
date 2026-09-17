@@ -22,6 +22,7 @@ from .popularity import POLICY_VERSION, assign_rarities, popularity_score
 ACTION_API = "https://fr.wikipedia.org/w/api.php"
 PAGEVIEWS_API = "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/fr.wikipedia.org/all-access/user"
 METRICS_SOURCE = "wikimedia:fr:all-access:user"
+DEFAULT_USER_AGENT = "Wikidex/1.0 (+https://github.com/Kantus8/WikiCollect)"
 PORTAL_CATEGORY = re.compile(r"^(?:Catégorie|Category):(Portail:.+)/Articles liés$")
 
 
@@ -81,7 +82,7 @@ class WikimediaClient:
     def __init__(self, *, user_agent: str | None = None, transport: httpx.BaseTransport | None = None,
                  timeout: float = 20, retries: int = 3, min_interval: float = 0.5,
                  sleep: Callable[[float], None] = time.sleep, clock: Callable[[], float] = time.monotonic):
-        self.user_agent = user_agent or os.getenv("WIKIMEDIA_USER_AGENT", "Wikidex/1.0 (local encyclopedic card catalogue)")
+        self.user_agent = user_agent or os.getenv("WIKIMEDIA_USER_AGENT") or DEFAULT_USER_AGENT
         self.http = httpx.Client(headers={"User-Agent": self.user_agent, "Accept": "application/json"},
                                  timeout=timeout, transport=transport, follow_redirects=True)
         self.retries = retries

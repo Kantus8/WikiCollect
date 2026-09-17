@@ -135,26 +135,21 @@ export default function App() {
       portal ? { portal_id: portal.portal_id } : {},
       setPack,
     );
-  function exportSave() {
+  async function exportSave() {
     if (!state) return;
-    const save = {
-      version: 1,
-      currency: Math.floor(balance),
-      inventory: Object.fromEntries(
-        state.inventory.map((c) => [c.title, c.quantity]),
-      ),
-      portalTickets: Object.fromEntries(
-        state.tickets.map((t) => [portalName(t.title), t.quantity]),
-      ),
-    };
-    const url = URL.createObjectURL(
-      new Blob([JSON.stringify(save, null, 2)], { type: "application/json" }),
-    );
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "wikidex-collection.json";
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const save = await api<unknown>("/export");
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(save, null, 2)], { type: "application/json" }),
+      );
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "wikidex-sauvegarde.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setError((e as Error).message);
+    }
   }
   async function importSave(raw: string) {
     try {
@@ -163,6 +158,14 @@ export default function App() {
         currency: parsed.currency,
         inventory: parsed.inventory,
         portalTickets: parsed.portalTickets || {},
+        ...(parsed.format === "wikidex-save"
+          ? {
+              format: parsed.format,
+              version: parsed.version,
+              branch_claims: parsed.branch_claims,
+              packs_opened: parsed.packs_opened,
+            }
+          : {}),
       };
       await mutate<{ state: State; ignored_titles: string[] }>(
         "/import",
@@ -524,13 +527,14 @@ export default function App() {
             </p>
             <button className="secondary" onClick={exportSave}>
               <Download size={17} />
-              Exporter ma collection en JSON
+              Exporter ma sauvegarde en JSON
             </button>
-            <h3>Importer le prototype</h3>
+            <h3>Restaurer ou importer une partie</h3>
             <p>
               L’import est possible une seule fois, sur une partie vierge.
-              Exportez la valeur <code>wikidex_v4_state</code> du stockage local
-              de l’ancien prototype dans un fichier JSON.
+              La sauvegarde Wikidex conserve vos cartes, tickets, Curiosité,
+              boosters et récompenses déjà reçues. Pour l’ancien prototype,
+              exportez la valeur <code>wikidex_v4_state</code> dans un fichier JSON.
             </p>
             <label className="secondary file-upload">
               <Upload size={17} />

@@ -382,3 +382,52 @@ def test_seed_does_not_reintroduce_redirected_titles(database, tmp_path):
         session.commit()
         assert session.scalar(select(Card).where(Card.title == "Old title")) is None
         assert session.scalar(select(Card).where(Card.title == "Canonical title")) is not None
+
+
+def test_export_restore_preserves_bonus_receipts_and_pack_counter(client, database):
+    payload = {"currency": 100, "inventory": {"Page common": 2, "Page rare": 1, "Page epic": 1}, "portalTickets": {"Physique": 3}}
+    assert client.post('/api/import', json=payload, headers={'Idempotency-Key': 'source'}).status_code == 200
+    with Session(database) as session:
+        source = session.scalar(select(Player))
+        source.currency, source.packs_opened = 100, 7
+        session.commit()
+    saved = client.get('/api/export').json()
+    assert saved['format'] == 'wikidex-save' and saved['version'] == 2
+    assert len(saved['branch_claims']) == 2
+    assert saved['packs_opened'] == 7
+    with TestClient(create_app(database, seed=False), client=('127.0.0.1', 40000)) as restored:
+        restored.get('/api/state')
+        result = restored.post('/api/import', json=saved, headers={'Idempotency-Key': 'restore'})
+        assert result.status_code == 200, result.text
+        assert result.json()['milestones'] == []
+        assert result.json()['state']['currency'] == saved['currency']
+        assert result.json()['state']['stats']['packs_opened'] == 7
+        restored_save = restored.get('/api/export').json()
+        assert restored_save['branch_claims'] == saved['branch_claims']
+        assert restored_save['inventory'] == saved['inventory']
+        assert restored_save['portalTickets'] == saved['portalTickets']
+        with Session(database) as session:
+            player, _ = game.get_player(session, restored.cookies['wikidex_session'])
+            assert game.evaluate_milestones(session, player) == []
+
+
+@pytest.mark.parametrize('invalid', ['duplicate', 'unknown', 'missing_mother'])
+def test_invalid_save_receipts_roll_back_import(client, invalid):
+    claim = {'branch_id': 'origins', 'tier': 'base', 'reward': 150, 'claimed_at': 1000}
+    saved = {'format': 'wikidex-save', 'version': 2, 'currency': 100,
+             'inventory': {'Page common': 1, 'Page rare': 1}, 'portalTickets': {},
+             'packs_opened': 3, 'branch_claims': [claim]}
+    if invalid == 'duplicate': saved['branch_claims'].append(claim.copy())
+    if invalid == 'unknown': claim['branch_id'] = 'unknown'
+    if invalid == 'missing_mother': saved['inventory'].pop('Page common')
+    result = client.post('/api/import', json=saved, headers={'Idempotency-Key': 'bad-save'})
+    assert result.status_code == 422
+    state = client.get('/api/state').json()
+    assert state['stats']['total_cards'] == 0
+    assert state['stats']['packs_opened'] == 0
+    assert not state['imported']
+
+
+def test_v2_save_requires_receipts_and_counter(client):
+    saved = {'format': 'wikidex-save', 'version': 2, 'currency': 100, 'inventory': {}, 'portalTickets': {}}
+    assert client.post('/api/import', json=saved, headers={'Idempotency-Key': 'incomplete-save'}).status_code == 422
